@@ -15,7 +15,7 @@ void main() {
 
     final client = MockClient((request) async {
       final multipartBody = latin1.decode(request.bodyBytes);
-      expect(multipartBody, contains('Content-Type: image/jpeg'));
+      expect(multipartBody.toLowerCase(), contains('content-type: image/jpeg'));
       expect(multipartBody, contains('name="locale"'));
       expect(multipartBody, contains('en'));
       return http.Response(

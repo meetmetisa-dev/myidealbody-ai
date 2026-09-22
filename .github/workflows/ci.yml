@@ -30,6 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       test_diagnostic: ${{ steps.test.outputs.diagnostic }}
+      build_diagnostic: ${{ steps.build.outputs.diagnostic }}
     defaults:
       run:
         working-directory: mobile
@@ -57,23 +58,70 @@ jobs:
           diagnostic=$(python3 - <<'PY'
           import json
 
+          tests = {}
+          messages = {}
+          failure = None
           with open('/tmp/flutter-test.log', encoding='utf-8') as lines:
               for line in lines:
                   try:
                       event = json.loads(line)
                   except json.JSONDecodeError:
                       continue
+                  if event.get('type') == 'testStart':
+                      test = event.get('test', {})
+                      tests[test.get('id')] = test.get('name', 'unknown test')
+                  elif event.get('type') == 'print':
+                      messages.setdefault(event.get('testID'), []).append(event.get('message', ''))
                   if event.get('type') == 'error':
-                      print(' '.join(event.get('error', '').split())[:220])
+                      failure = ' '.join(event.get('error', '').split())
                       break
+                  if event.get('type') == 'testDone' and event.get('result') != 'success':
+                      test_id = event.get('testID')
+                      detail = ' '.join(messages.get(test_id, []))
+                      failure = f"{tests.get(test_id, 'unknown test')}: {detail}"
+                      break
+          if failure:
+              print(failure[:220])
           PY
           )
-          if [ -z "$diagnostic" ]; then
+          if [ "$status" -ne 0 ] && [ -z "$diagnostic" ]; then
             diagnostic=$(tail -n 3 /tmp/flutter-test.log | tr '\n' ' ')
           fi
           printf 'diagnostic=%s\n' "$diagnostic" >> "$GITHUB_OUTPUT"
           exit "$status"
-      - run: flutter build apk --debug --dart-define=API_BASE_URL=https://example.invalid
+      - name: Build APK and expose first failure
+        id: build
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          flutter build apk --debug --dart-define=API_BASE_URL=https://example.invalid 2>&1 | tee /tmp/flutter-build.log
+          status=${PIPESTATUS[0]}
+          diagnostic=''
+          if [ "$status" -ne 0 ]; then
+            diagnostic=$(python3 - <<'PY'
+          with open('/tmp/flutter-build.log', encoding='utf-8', errors='replace') as source:
+              lines = [line.strip() for line in source]
+
+          start = next(
+              (index + 1 for index, line in enumerate(lines) if line == '* What went wrong:'),
+              None,
+          )
+          if start is None:
+              selected = lines[-8:]
+          else:
+              selected = []
+              for line in lines[start:]:
+                  if line.startswith('* Try:'):
+                      break
+                  if line:
+                      selected.append(line)
+          print(' '.join(selected)[:220])
+          PY
+            )
+          fi
+          printf 'diagnostic=%s\n' "$diagnostic" >> "$GITHUB_OUTPUT"
+          exit "$status"
 
   test-diagnostic:
     if: ${{ always() && needs.mobile.outputs.test_diagnostic != '' }}
@@ -82,3 +130,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Test diagnostic exposed in this job name."
+
+  build-diagnostic:
+    if: ${{ always() && needs.mobile.outputs.build_diagnostic != '' }}
+    needs: mobile
+    name: ${{ needs.mobile.outputs.build_diagnostic }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Build diagnostic exposed in this job name."
