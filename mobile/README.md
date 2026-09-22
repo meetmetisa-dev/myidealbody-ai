@@ -28,7 +28,7 @@ This client is deliberately honest about what computer vision can and cannot see
 - JDK 17
 - a running MyIdealBody API (the sibling `backend` project)
 
-The Android host uses AGP 8.13.2, Gradle 8.13, Kotlin 2.3.21, `minSdk 24`, and `targetSdk 36`.
+The Android host uses AGP 8.13.2, Gradle 8.14.4, Kotlin 2.3.21, `minSdk 24`, and `targetSdk 36`.
 
 ## Run locally
 
@@ -40,15 +40,25 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000 --dart-define=DEMO_M
 
 `10.0.2.2` reaches the host machine from the Android emulator. Debug builds allow cleartext HTTP only for `10.0.2.2` and `localhost`; the release manifest refuses cleartext traffic. Use an HTTPS API URL for physical-device and production builds.
 
-`DEMO_MODE` defaults to `true`: the app keeps the selected image on-device and sends a neutral generated placeholder to the fixed-result backend. Set `--dart-define=DEMO_MODE=false` only for a reviewed build connected to a real recognition provider with final privacy disclosures.
-
-The included Linux/macOS `android/gradlew` bootstraps Gradle 8.13 when a system Gradle is unavailable. For a standard Gradle wrapper JAR or on Windows, back up the custom Android files and run:
+For a USB-connected Android phone running the debug build, keep the development
+API on the computer and forward it through Android Debug Bridge:
 
 ```bash
-flutter create . --platforms=android --org com.myidealbody
+adb reverse tcp:8000 tcp:8000
+flutter run \
+  --dart-define=API_BASE_URL=http://localhost:8000 \
+  --dart-define=DEMO_MODE=true
 ```
 
-Then reapply `compileSdk/targetSdk 36`, `minSdk 24`, the manifest permissions, and `MainActivity.kt` method channel from this repository.
+This avoids exposing the development server to the local network. Remove the
+forward later with `adb reverse --remove tcp:8000`.
+
+`DEMO_MODE` defaults to `true`: the app keeps the selected image on-device and sends a neutral generated placeholder to the fixed-result backend. Set `--dart-define=DEMO_MODE=false` only for a reviewed build connected to a real recognition provider with final privacy disclosures.
+
+The included standard Gradle wrapper bootstraps Gradle 8.14.4. Do not regenerate
+the Android host with `flutter create` unless you intentionally preserve and
+reapply the package name, signing configuration, manifest policy, and native
+method channel from this repository.
 
 ## API contract
 
@@ -132,6 +142,48 @@ flutter build apk --debug --dart-define=API_BASE_URL=https://example.invalid
 
 CI runs those checks on Flutter 3.47.5. This workspace did not have Flutter or Dart installed, so the generated localization files, package lockfile, analyzer results, tests, and APK must be produced by CI or a Flutter workstation.
 
+## Build a Play Store bundle
+
+Google Play accepts a signed Android App Bundle (`.aab`), not this repository's
+source ZIP. Confirm the final package name (`com.myidealbody.ai`) before the
+first Play upload because changing it later creates a different app.
+
+Create and securely back up an upload keystore outside the repository:
+
+```bash
+keytool -genkeypair -v \
+  -keystore /secure/path/myidealbody-upload.jks \
+  -alias upload \
+  -keyalg RSA -keysize 2048 -validity 10000
+cp android/key.properties.example android/key.properties
+```
+
+Edit the untracked `android/key.properties` to reference that keystore. Do not
+commit the keystore, `key.properties`, or passwords. Then build the production
+bundle with the real HTTPS API endpoint and real-photo mode explicitly enabled:
+
+```bash
+flutter pub get
+flutter gen-l10n
+flutter build appbundle --release \
+  --dart-define=API_BASE_URL=https://api.example.com \
+  --dart-define=DEMO_MODE=false
+```
+
+The signed artifact is written to
+`build/app/outputs/bundle/release/app-release.aab`. Verify its signature before
+uploading:
+
+```bash
+jarsigner -verify -verbose -certs \
+  build/app/outputs/bundle/release/app-release.aab
+```
+
+The release build now fails deliberately when `android/key.properties` is
+absent, preventing an unsigned bundle from being mistaken for a Play-ready
+artifact. Increment the `+1` build number in `pubspec.yaml` for every subsequent
+Play upload.
+
 ## Before Play Store release
 
 - replace the mock recognizer and benchmark it on labeled Indonesian meals
@@ -141,6 +193,7 @@ CI runs those checks on Flutter 3.47.5. This workspace did not have Flutter or D
 - enforce free-scan quotas server-side; the MVP uses short-lived device timestamps only
 - configure Play products, base plans, regional prices, and license testers
 - configure an upload keystore; do not use debug signing for production
+- re-encode photos client-side before upload to remove EXIF; the client already replaces the original filename, but picker metadata options do not document a byte-level sanitization guarantee
 - run camera, denial, low-light, gallery, offline, large-text, and TalkBack tests on real devices
 - validate photo-provider retention and deletion terms
 - complete Play Data safety and Health apps declarations

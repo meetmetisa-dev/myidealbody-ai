@@ -20,7 +20,11 @@
     <link rel="stylesheet" href="styles.css" />
     <script src="app.js" defer></script>
   </head>
-  <body data-repository-url="https://github.com/meetmetisa-dev/myidealbody-ai">
+  <!-- Set data-api-base-url to a separately deployed HTTPS API origin (without /v1) to enable server analysis. -->
+  <body
+    data-repository-url="https://github.com/meetmetisa-dev/myidealbody-ai"
+    data-api-base-url=""
+  >
     <a class="skip-link" href="#main-content" data-i18n="skipLink">Skip to main content</a>
 
     <header class="site-header" data-header>
@@ -184,18 +188,25 @@
       <section class="demo-section section" id="demo">
         <div class="container">
           <div class="section-heading reveal">
-            <p class="section-kicker" data-i18n="demoKicker">Interactive product preview</p>
-            <h2 data-i18n="demoTitle">See how a meal becomes an editable estimate.</h2>
-            <p data-i18n="demoBody">This browser demo uses a fixed sample meal. It does not upload a photo or run the production model.</p>
+            <p class="section-kicker" data-i18n="demoKicker">Try it with your meal</p>
+            <h2 data-i18n="demoTitle">Upload a food photo and build a guided estimate.</h2>
+            <p data-i18n="demoBody">Your photo stays in this browser. Until the production vision service is connected, this transparent demo calculates a nutrition range from the meal and portion you select.</p>
           </div>
 
           <div class="demo-shell reveal" data-demo-shell>
             <div class="demo-visual">
               <div class="demo-label-row">
-                <span class="live-label"><span aria-hidden="true"></span><span data-i18n="demoCamera">Camera guidance</span></span>
-                <span data-i18n="demoHint">Whole plate in frame</span>
+                <span class="live-label"><span aria-hidden="true"></span><span data-i18n="demoCamera">Photo preview</span></span>
+                <span data-i18n="demoHint">JPG, PNG or WebP · up to 10 MB</span>
               </div>
-              <div class="meal-art" role="img" aria-label="Illustrated Indonesian rice, grilled chicken, tempeh, and vegetables on a plate" data-i18n-aria="mealArt">
+              <div
+                class="meal-art upload-stage"
+                role="button"
+                tabindex="0"
+                aria-label="Choose a food photo"
+                data-i18n-aria="uploadStage"
+                data-upload-stage
+              >
                 <svg viewBox="0 0 620 430" aria-hidden="true">
                   <defs>
                     <filter id="plate-shadow" x="-20%" y="-20%" width="140%" height="150%">
@@ -233,57 +244,105 @@
                     <circle cx="287" cy="284" r="10" /><circle cx="312" cy="267" r="8" /><circle cx="306" cy="299" r="7" />
                   </g>
                 </svg>
+                <img class="photo-preview" alt="Selected food photo preview" data-photo-preview hidden />
+                <div class="upload-prompt" data-upload-prompt>
+                  <span class="upload-prompt-icon" aria-hidden="true">
+                    <svg viewBox="0 0 32 32"><path d="M5 9.5h5l2-3h8l2 3h5v16H5v-16Z" /><circle cx="16" cy="17" r="5" /></svg>
+                  </span>
+                  <strong data-i18n="uploadPromptTitle">Add your food photo</strong>
+                  <span data-i18n="uploadPromptBody">Tap to choose a photo, or drag and drop it here</span>
+                </div>
                 <div class="scan-corners" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
                 <div class="scan-line" aria-hidden="true"></div>
               </div>
-              <button class="button button-primary demo-button" type="button" data-demo-button>
-                <span class="camera-icon small" aria-hidden="true"></span>
-                <span data-i18n="demoButton">Analyze sample meal</span>
-              </button>
+              <div class="upload-actions">
+                <label class="button upload-button" for="photo-upload">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 14V3m0 0L6 7m4-4 4 4M4 12v4h12v-4" /></svg>
+                  <span data-i18n="uploadButton">Choose photo</span>
+                  <input id="photo-upload" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" data-photo-input />
+                </label>
+                <label class="button upload-button" for="camera-capture">
+                  <span class="camera-icon small" aria-hidden="true"></span>
+                  <span data-i18n="cameraButton">Use camera</span>
+                  <input id="camera-capture" class="visually-hidden" type="file" accept="image/*" capture="environment" data-camera-input />
+                </label>
+                <button class="remove-photo" type="button" data-remove-photo hidden data-i18n="removePhoto">Remove</button>
+              </div>
+              <p class="file-status" aria-live="polite" data-file-status data-i18n="uploadPrivacy">No photo selected · files are not uploaded in this demo.</p>
             </div>
 
             <div class="demo-result" aria-live="polite" aria-busy="false" data-demo-result>
-              <div class="result-idle" data-result-idle>
-                <div class="result-idle-icon" aria-hidden="true">
-                  <svg viewBox="0 0 32 32"><path d="M5 9.5h5l2-3h8l2 3h5v16H5v-16Z" /><circle cx="16" cy="17" r="5" /></svg>
+              <div class="result-idle analysis-setup" data-result-idle>
+                <p class="section-kicker" data-i18n="demoIdleKicker">Guided demo mode</p>
+                <h3 data-i18n="demoIdleTitle">Tell us what is on the plate</h3>
+                <p data-i18n="demoIdleBody">Select the closest meal and portion. This keeps the estimate useful without claiming the website can visually recognize your photo yet.</p>
+                <div class="demo-truth-note" data-mode-note>
+                  <span aria-hidden="true">i</span>
+                  <p><strong data-mode-title data-i18n="demoTruthTitle">What happens to the photo?</strong><small data-mode-body data-i18n="demoTruthBody">It is previewed only on your device. The numbers come from your selections, not image recognition.</small></p>
                 </div>
-                <p class="section-kicker" data-i18n="demoIdleKicker">Ready when you are</p>
-                <h3 data-i18n="demoIdleTitle">Start with the sample plate</h3>
-                <p data-i18n="demoIdleBody">The preview will show example ranges, detected items, confidence, and a clarification question.</p>
+                <form class="analysis-form" data-analysis-form>
+                  <label data-guided-field>
+                    <span data-i18n="mealLabel">Closest meal</span>
+                    <select data-meal-select>
+                      <option value="plate" data-i18n="mealPlate">Rice, grilled chicken, tempeh &amp; vegetables</option>
+                      <option value="friedRice" data-i18n="mealFriedRice">Nasi goreng with egg</option>
+                      <option value="gadoGado" data-i18n="mealGadoGado">Gado-gado</option>
+                      <option value="sotoAyam" data-i18n="mealSotoAyam">Soto ayam with rice</option>
+                      <option value="other" data-i18n="mealOther">Other / mixed meal</option>
+                    </select>
+                  </label>
+                  <label data-guided-field>
+                    <span data-i18n="portionLabel">Portion size</span>
+                    <select data-portion-select>
+                      <option value="small" data-i18n="portionSmall">Small</option>
+                      <option value="medium" selected data-i18n="portionMedium">Medium</option>
+                      <option value="large" data-i18n="portionLarge">Large</option>
+                    </select>
+                  </label>
+                  <label class="checkbox-field" data-guided-field>
+                    <input type="checkbox" data-extra-oil />
+                    <span><strong data-i18n="extraOilTitle">Extra oil or sweet sauce</strong><small data-i18n="extraOilBody">Adds an allowance for hidden calories</small></span>
+                  </label>
+                  <button class="button button-primary demo-button" type="submit" data-demo-button disabled>
+                    <span class="camera-icon small" aria-hidden="true"></span>
+                    <span data-i18n="demoButton">Create guided estimate</span>
+                  </button>
+                  <p class="form-help" data-form-help data-i18n="uploadFirst">Add a photo to enable the estimate.</p>
+                </form>
               </div>
 
               <div class="result-loading" hidden data-result-loading>
                 <div class="loader" aria-hidden="true"><span></span><span></span><span></span></div>
-                <p class="section-kicker" data-i18n="demoLoadingKicker">Sample analysis</p>
-                <h3 data-demo-loading-title data-i18n="demoLoadingOne">Identifying likely foods…</h3>
-                <p data-i18n="demoLoadingBody">A production result would be calculated from a nutrient database after recognition.</p>
+                <p class="section-kicker" data-i18n="demoLoadingKicker">Guided calculation</p>
+                <h3 data-demo-loading-title data-i18n="demoLoadingOne">Preparing your estimate…</h3>
+                <p data-loading-body data-i18n="demoLoadingBody">We are applying your meal, portion, and extra-oil selections to a reference range.</p>
               </div>
 
               <div class="result-content" hidden data-result-content>
                 <div class="result-topline">
                   <div>
-                    <p class="section-kicker" data-i18n="demoResultKicker">Example estimate</p>
-                    <h3 data-i18n="demoResultTitle">Lunch plate</h3>
+                    <p class="section-kicker" data-result-kicker data-i18n="demoResultKicker">Guided estimate</p>
+                    <h3 data-result-title>Rice, chicken &amp; tempeh</h3>
                   </div>
-                  <span class="confidence-badge"><span aria-hidden="true"></span><span data-i18n="demoConfidence">Medium confidence</span></span>
+                  <span class="confidence-badge"><span aria-hidden="true"></span><span data-result-confidence data-i18n="demoConfidence">Selection-based</span></span>
                 </div>
                 <div class="macro-grid">
-                  <div class="macro-card calories"><span data-i18n="demoCalories">Calories</span><strong>610–760</strong><small>kcal</small></div>
-                  <div class="macro-card protein"><span data-i18n="demoProtein">Protein</span><strong>38–49</strong><small>g</small></div>
+                  <div class="macro-card calories"><span data-i18n="demoCalories">Calories</span><strong data-calorie-result>610–760</strong><small>kcal</small></div>
+                  <div class="macro-card protein"><span data-i18n="demoProtein">Protein</span><strong data-protein-result>38–49</strong><small>g</small></div>
                 </div>
                 <p class="range-note"><span aria-hidden="true">i</span><span data-i18n="demoRangeNote">A range reflects likely portion and recipe differences.</span></p>
                 <div class="detected-list">
-                  <div class="detected-heading"><strong data-i18n="demoDetected">Likely foods</strong><span data-i18n="demoEdit">Review in app</span></div>
-                  <div><span><i class="food-dot rice"></i><span data-i18n="foodRice">White rice</span></span><strong>180–220 g</strong></div>
-                  <div><span><i class="food-dot chicken"></i><span data-i18n="foodChicken">Grilled chicken</span></span><strong>110–140 g</strong></div>
-                  <div><span><i class="food-dot tempe"></i><span data-i18n="foodTempe">Tempeh</span></span><strong>55–70 g</strong></div>
-                  <div><span><i class="food-dot veg"></i><span data-i18n="foodVeg">Mixed vegetables</span></span><strong>80–110 g</strong></div>
+                  <div class="detected-heading"><strong data-result-list-title data-i18n="demoInputs">Your inputs</strong><span data-i18n="demoEditable">Editable</span></div>
+                  <div data-result-row><span><i class="food-dot chicken"></i><span data-row-label data-i18n="mealInput">Meal</span></span><strong data-row-value>Rice, chicken &amp; tempeh</strong></div>
+                  <div data-result-row><span><i class="food-dot rice"></i><span data-row-label data-i18n="portionInput">Portion</span></span><strong data-row-value>Medium</strong></div>
+                  <div data-result-row><span><i class="food-dot veg"></i><span data-row-label data-i18n="oilInput">Extra oil / sauce</span></span><strong data-row-value>No</strong></div>
                 </div>
-                <div class="question-card">
-                  <span class="question-mark" aria-hidden="true">?</span>
-                  <div><strong data-i18n="demoQuestionTitle">One quick check</strong><p data-i18n="demoQuestionBody">Was extra oil or sweet sauce added?</p></div>
+                <div class="question-card" data-result-note>
+                  <span class="question-mark" aria-hidden="true">!</span>
+                  <div><strong data-result-note-title data-i18n="demoQuestionTitle">Photo recognition is not active</strong><p data-result-note-body data-i18n="demoQuestionBody">Connect the production vision API before treating the image itself as analyzed.</p></div>
                 </div>
-                <p class="demo-disclaimer" data-i18n="demoDisclaimer">Illustrative sample only. Not a measurement or medical advice.</p>
+                <button class="button button-secondary button-block adjust-button" type="button" data-adjust-estimate data-i18n="adjustEstimate">Adjust selections</button>
+                <p class="demo-disclaimer" data-result-disclaimer data-i18n="demoDisclaimer">Guided reference only—not image recognition, a measurement, or medical advice.</p>
               </div>
             </div>
           </div>
@@ -344,7 +403,7 @@
         </div>
       </section>
 
-      <section class="privacy-section section">
+      <section class="privacy-section section" id="privacy">
         <div class="container privacy-shell reveal">
           <div class="privacy-main">
             <span class="shield-icon" aria-hidden="true">
@@ -436,7 +495,7 @@
             </details>
             <details>
               <summary data-i18n="faqThreeQ">Does it analyze live video?</summary>
-              <p data-i18n="faqThreeA">The prototype shows a framing overlay and a live lighting cue, then analyzes one still photo. This reduces battery and data use while keeping the review step clear.</p>
+              <p data-i18n="faqThreeA">No. This website uses one still photo. With no production API configured, the photo stays in your browser and the estimate comes from your selections—not visual recognition.</p>
             </details>
             <details>
               <summary data-i18n="faqFourQ">Is this medical or dietetic advice?</summary>
@@ -464,6 +523,7 @@
           <a href="#demo" data-i18n="navDemo">Demo</a>
           <a href="#pricing" data-i18n="navPricing">Pricing</a>
           <a href="#status" data-i18n="navStatus">Build status</a>
+          <a href="#privacy" data-i18n="footerPrivacy">Privacy</a>
           <a class="repo-link" href="#top" data-i18n="footerSource">Source code</a>
         </div>
       </div>

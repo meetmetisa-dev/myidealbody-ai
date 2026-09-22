@@ -59,6 +59,17 @@ textarea {
   font: inherit;
 }
 
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -1068,7 +1079,7 @@ h3 {
 .demo-shell {
   position: relative;
   display: grid;
-  min-height: 590px;
+  min-height: 680px;
   grid-template-columns: 1.05fr 0.95fr;
   overflow: hidden;
   border: 1px solid rgba(23, 59, 53, 0.09);
@@ -1129,9 +1140,154 @@ h3 {
   max-height: 390px;
 }
 
+.upload-stage {
+  margin-top: 14px;
+  cursor: pointer;
+  isolation: isolate;
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.upload-stage > svg {
+  opacity: 0.28;
+  transition: opacity 180ms ease;
+}
+
+.upload-stage:hover,
+.upload-stage:focus-visible,
+.upload-stage.is-dragging {
+  background-color: #285950;
+  box-shadow: inset 0 0 0 2px rgba(168, 201, 104, 0.72);
+}
+
+.upload-stage.has-photo {
+  background: #102f2a;
+}
+
+.upload-stage.has-photo > svg,
+.upload-stage.has-photo .upload-prompt {
+  display: none;
+}
+
+.photo-preview {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #102f2a;
+}
+
+.upload-prompt {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  width: min(78%, 340px);
+  padding: 24px;
+  align-items: center;
+  flex-direction: column;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  color: var(--white);
+  background: rgba(14, 48, 42, 0.84);
+  box-shadow: 0 18px 40px rgba(5, 28, 24, 0.22);
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+
+.upload-prompt strong {
+  font-size: 1rem;
+}
+
+.upload-prompt > span:last-child {
+  color: #c9d9d4;
+  font-size: 0.76rem;
+}
+
+.upload-prompt-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 5px;
+  place-items: center;
+  border-radius: 16px;
+  color: var(--forest);
+  background: var(--leaf);
+}
+
+.upload-prompt-icon svg {
+  width: 27px;
+  height: 27px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.upload-actions {
+  display: flex;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.upload-button {
+  min-height: 46px;
+  padding: 10px 15px;
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
+.upload-button:hover {
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: none;
+}
+
+.upload-button > svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.remove-photo {
+  padding: 8px;
+  border: 0;
+  color: #ffd9ca;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.file-status {
+  min-height: 20px;
+  margin: 9px 0 0;
+  color: #b8cdc6;
+  font-size: 0.68rem;
+  text-align: center;
+}
+
+.file-status.is-error {
+  color: #ffc1aa;
+}
+
 .scan-corners {
   position: absolute;
+  z-index: 2;
   inset: 44px;
+  pointer-events: none;
 }
 
 .scan-corners span {
@@ -1178,6 +1334,11 @@ h3 {
   box-shadow: none;
 }
 
+.analysis-form .demo-button {
+  width: 100%;
+  margin-top: 2px;
+}
+
 .demo-button:hover {
   color: var(--forest);
   background: #b6d778;
@@ -1206,6 +1367,137 @@ h3 {
 
 .result-idle {
   text-align: center;
+}
+
+.result-idle.analysis-setup {
+  text-align: left;
+}
+
+.analysis-setup > .section-kicker {
+  margin-bottom: 7px;
+}
+
+.analysis-setup > h3 {
+  margin-bottom: 9px;
+  font-size: 1.65rem;
+}
+
+.analysis-setup > p:not(.section-kicker) {
+  margin-bottom: 17px;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+}
+
+.demo-truth-note {
+  display: flex;
+  margin-bottom: 18px;
+  padding: 12px 13px;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid #d9e3dd;
+  border-radius: 13px;
+  background: #f3f7f4;
+}
+
+.demo-truth-note > span {
+  display: grid;
+  width: 23px;
+  height: 23px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--white);
+  background: var(--forest);
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.demo-truth-note p {
+  display: flex;
+  margin: 0;
+  flex-direction: column;
+}
+
+.demo-truth-note strong {
+  font-size: 0.73rem;
+}
+
+.demo-truth-note small {
+  color: var(--ink-soft);
+  font-size: 0.67rem;
+  line-height: 1.45;
+}
+
+.demo-truth-note.api-mode {
+  border-color: #cfdcaf;
+  background: #f5f9e8;
+}
+
+.analysis-form {
+  display: grid;
+  gap: 12px;
+}
+
+.analysis-form > label:not(.checkbox-field) {
+  display: grid;
+  gap: 5px;
+  color: #3d5751;
+  font-size: 0.72rem;
+  font-weight: 760;
+}
+
+.analysis-form select {
+  width: 100%;
+  min-height: 45px;
+  padding: 9px 38px 9px 12px;
+  border: 1px solid #cfdad4;
+  border-radius: 11px;
+  color: var(--ink);
+  background: var(--white);
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+
+.checkbox-field {
+  display: flex;
+  padding: 10px 12px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #d9e1dc;
+  border-radius: 11px;
+  cursor: pointer;
+}
+
+.checkbox-field input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  accent-color: var(--forest);
+}
+
+.checkbox-field > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-field strong {
+  font-size: 0.73rem;
+}
+
+.checkbox-field small {
+  color: #6e817c;
+  font-size: 0.65rem;
+}
+
+.form-help {
+  margin: -4px 0 0;
+  color: #71837f;
+  font-size: 0.65rem;
+  text-align: center;
+}
+
+.form-help.is-error {
+  color: #a6452d;
 }
 
 .result-idle-icon {
@@ -1415,9 +1707,13 @@ h3 {
 }
 
 .detected-list > div:not(.detected-heading) strong {
+  max-width: 58%;
   color: var(--ink);
   font-size: 0.68rem;
+  text-align: right;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .food-dot {
@@ -1474,6 +1770,13 @@ h3 {
   color: #778984;
   font-size: 0.63rem;
   text-align: center;
+}
+
+.adjust-button {
+  min-height: 42px;
+  margin-top: 12px;
+  padding: 9px 14px;
+  font-size: 0.78rem;
 }
 
 [hidden] {
@@ -2339,6 +2642,15 @@ h3 {
   .demo-result {
     min-height: 510px;
     padding: 32px 22px;
+  }
+
+  .upload-actions .upload-button {
+    flex: 1 1 150px;
+  }
+
+  .upload-prompt {
+    width: min(86%, 320px);
+    padding: 20px 16px;
   }
 
   .macro-grid {

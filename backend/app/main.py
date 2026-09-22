@@ -36,6 +36,10 @@ def create_app() -> FastAPI:
     )
     app.add_exception_handler(AppError, app_error_handler)  # type: ignore[arg-type]
     app.add_exception_handler(RequestValidationError, validation_error_handler)  # type: ignore[arg-type]
+    # Starlette executes the most recently added middleware first. Keep CORS
+    # outermost so browser clients can read structured errors from the upload
+    # size guard as well as successful API responses.
+    app.add_middleware(RequestBodyLimitMiddleware, max_bytes=settings.max_request_body_bytes)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=list(settings.cors_origins),
@@ -43,7 +47,6 @@ def create_app() -> FastAPI:
         allow_methods=["GET", "POST", "OPTIONS"],
         allow_headers=["Authorization", "Content-Type"],
     )
-    app.add_middleware(RequestBodyLimitMiddleware, max_bytes=settings.max_request_body_bytes)
     app.state.analysis_service = AnalysisService(provider=provider, catalog=catalog)
     app.state.billing_verifier = GooglePlayVerifier(settings)
 

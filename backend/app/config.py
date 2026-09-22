@@ -70,7 +70,11 @@ def get_settings() -> Settings:
         api_prefix=os.getenv("API_PREFIX", "/v1").rstrip("/"),
         cors_origins=_csv(
             "CORS_ORIGINS",
-            ("http://localhost:3000", "http://localhost:5173"),
+            (
+                "https://meetmetisa-dev.github.io",
+                "http://localhost:3000",
+                "http://localhost:5173",
+            ),
         ),
         provider=os.getenv("VISION_PROVIDER", "mock").strip().lower(),
         nutrition_catalog_path=Path(nutrition_catalog) if nutrition_catalog else None,

@@ -62,6 +62,7 @@ class ApiService {
       imagePart = await http.MultipartFile.fromPath(
         'image',
         imagePath,
+        filename: _safeUploadFilename(contentType),
         contentType: contentType,
       );
     }
@@ -194,6 +195,14 @@ class ApiService {
     }
     throw const ApiException('Choose a JPEG, PNG, or WebP image.');
   }
+
+  String _safeUploadFilename(MediaType contentType) =>
+      switch (contentType.subtype) {
+        'jpeg' => 'meal-upload.jpg',
+        'png' => 'meal-upload.png',
+        'webp' => 'meal-upload.webp',
+        _ => 'meal-upload.bin',
+      };
 }
 
 // 64 × 64 neutral PNG used only in the default fixed-result demo mode.

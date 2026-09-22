@@ -77,6 +77,18 @@ The response contains per-food and total calorie/protein/carbohydrate/fat estima
 
 The default `mock` provider does **not** inspect the photo; it always returns a development plate of rice, fried chicken, and vegetables. This is explicit in the response as `provider: "mock_demo"`.
 
+## Browser website integration
+
+GitHub Pages can host the static website, but it cannot run this Python API. Photo uploads from the website therefore require this backend to be deployed separately behind HTTPS. Configure the website with that public API base URL and configure this service with the website's exact origin:
+
+```dotenv
+CORS_ORIGINS=https://meetmetisa-dev.github.io
+```
+
+An origin contains only the scheme and host; do not append `/myidealbody-ai/`. The bundled default also permits the two documented localhost development origins. Keep the production list narrow, and do not treat CORS as authentication or abuse protection.
+
+The public website must continue to label results from `provider: "mock_demo"` as a fixed demonstration. A genuine photo analysis requires `VISION_PROVIDER=openai_compatible`, a separately hosted compatible vision model, and a reviewed nutrition catalog. Never put the vision provider's API key in browser JavaScript; the browser sends the image to this API and only this API calls the provider.
+
 ## Vision provider
 
 Set `VISION_PROVIDER=openai_compatible` plus the URL/model/key variables in `.env.example`. The adapter:

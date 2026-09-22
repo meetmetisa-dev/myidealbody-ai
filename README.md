@@ -56,7 +56,7 @@ flutter gen-l10n
 flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000 --dart-define=DEMO_MODE=true
 ```
 
-`10.0.2.2` routes the Android emulator to the backend running on the development computer. For a physical phone, use the computer's LAN address, keep both devices on a trusted network, and deliberately expose the development server with `uvicorn app.main:app --reload --env-file .env --host 0.0.0.0`. Allow only the needed port in the local firewall; never expose the development server directly to the public internet.
+`10.0.2.2` routes the Android emulator to the backend running on the development computer. For a USB-connected physical phone, keep the API bound to the computer and run `adb reverse tcp:8000 tcp:8000`, then launch Flutter with `--dart-define=API_BASE_URL=http://localhost:8000`. This matches the debug-only network policy and avoids exposing the development server to the LAN. Remove the forwarding rule afterward with `adb reverse --remove tcp:8000`. Production builds require a public HTTPS API.
 
 The first Play-enabled build also needs products created in Play Console, per-user backend authentication, server-side entitlement storage, and a signed internal-testing release. Until secure verification and Play products are configured, the app remains usable in clearly labeled demo/free mode and cannot start a real purchase.
 
@@ -66,7 +66,9 @@ The first Play-enabled build also needs products created in Play Console, per-us
 python3 -m http.server 8080 --directory website
 ```
 
-Open `http://localhost:8080`. The Pages workflow deploys only `website/`; the browser demo uses a fixed sample and does not run the FastAPI service or upload an image.
+Open `http://localhost:8080`. The Pages workflow deploys only `website/`. With the default blank `data-api-base-url`, users can choose or capture a photo, preview it locally, and create a clearly labeled guided estimate from their meal and portion selections; the photo is not uploaded or treated as visually recognized.
+
+To enable real photo analysis, deploy `backend/` separately behind HTTPS with a production vision provider, then set `data-api-base-url` on `website/index.html` to that origin without `/v1`. The browser downsizes and re-encodes the image before posting it to `/v1/analyze`, and the backend must allow `https://meetmetisa-dev.github.io` in `CORS_ORIGINS`. Never put the provider API key in the website JavaScript.
 
 ## Quality checks
 

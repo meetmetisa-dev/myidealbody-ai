@@ -1,0 +1,6 @@
+# Copy this file to key.properties and replace every placeholder locally.
+# Never commit key.properties, the .jks file, or either password.
+storePassword=REPLACE_WITH_A_STRONG_PASSWORD
+keyPassword=REPLACE_WITH_A_STRONG_PASSWORD
+keyAlias=upload
+storeFile=/absolute/path/to/myidealbody-upload.jks

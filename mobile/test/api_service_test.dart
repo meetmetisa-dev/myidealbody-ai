@@ -16,6 +16,8 @@ void main() {
     final client = MockClient((request) async {
       final multipartBody = latin1.decode(request.bodyBytes);
       expect(multipartBody.toLowerCase(), contains('content-type: image/jpeg'));
+      expect(multipartBody, contains('filename="meal-upload.jpg"'));
+      expect(multipartBody, isNot(contains('meal-without-extension')));
       expect(multipartBody, contains('name="locale"'));
       expect(multipartBody, contains('en'));
       return http.Response(
