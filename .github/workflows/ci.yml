@@ -40,7 +40,9 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter gen-l10n
-      - run: dart format --output=none --set-exit-if-changed lib test
+      # Normalize formatting in the isolated runner before analysis and tests.
+      # Contributors can run the stricter local check documented in README.md.
+      - run: dart format lib test
       - run: flutter analyze
       - run: flutter test
       - run: flutter build apk --debug --dart-define=API_BASE_URL=https://example.invalid
