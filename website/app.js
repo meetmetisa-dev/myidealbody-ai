@@ -68,12 +68,12 @@
     navStatus: "Status produk",
     heroEyebrow: "Prototipe pengembangan · English + Bahasa Indonesia",
     heroTitle: "Titik awal yang lebih jelas untuk setiap piring.",
-    heroBody: "Foto makanan untuk memperkirakan rentang kalori dan protein, periksa makanan yang terdeteksi, lalu sesuaikan hasilnya sebelum disimpan.",
+    heroBody: "Unggah foto makanan dan buat rentang kalori serta protein dari pilihanmu. Demo publik saat ini hanya menampilkan foto secara lokal dan belum mengenalinya secara visual.",
     heroPrimary: "Coba demo interaktif",
     heroSecondary: "Lihat yang sudah tersedia",
     heroNote: "MVP berbasis kode untuk pengembangan beta tertutup—belum tersedia di Google Play.",
     trustRanges: "Rentang yang jujur",
-    trustEditable: "Periksa sebelum menyimpan",
+    trustEditable: "Periksa dan sesuaikan",
     trustLocal: "Fokus makanan Indonesia",
     phoneToday: "Hari ini",
     phoneGreeting: "Selamat siang",
@@ -94,8 +94,8 @@
     featureOneBody: "Petunjuk pencahayaan dan bingkai sederhana membantu kamu mengambil foto diam yang berguna tanpa analisis video terus-menerus.",
     featureTwoTitle: "Lihat rentang yang wajar",
     featureTwoBody: "Kalori dan protein ditampilkan sebagai estimasi dengan tingkat keyakinan—bukan angka desimal yang seolah-olah pasti.",
-    featureThreeTitle: "Periksa sebelum menyimpan",
-    featureThreeBody: "Sesuaikan porsi yang terdeteksi dan periksa catatan tentang minyak, santan, atau saus manis. Penghitungan ulang dari jawaban masih direncanakan.",
+    featureThreeTitle: "Periksa dan sesuaikan",
+    featureThreeBody: "Sesuaikan porsi pilihan dan periksa catatan tentang minyak, santan, atau saus manis. Deteksi visual dan penghitungan ulang dari jawaban masih direncanakan.",
     demoKicker: "Coba dengan makananmu",
     demoTitle: "Unggah foto makanan dan buat estimasi terpandu.",
     demoBody: "Foto tetap berada di browser ini. Sebelum layanan visi produksi terhubung, demo transparan ini menghitung rentang gizi dari jenis makanan dan porsi yang kamu pilih.",
@@ -200,13 +200,13 @@
     compareProduct: "Pendekatan MyIdealBody",
     compareProductBody: "Kemungkinan komponen + rentang porsi + catatan tentang minyak atau santan + porsi yang dapat disesuaikan",
     howKicker: "Satu menit, tiga langkah",
-    howTitle: "Dari piring ke catatan—tanpa terasa seperti mengisi spreadsheet.",
+    howTitle: "Dari piring ke rentang terpandu yang sudah diperiksa.",
     stepOneTitle: "Foto",
     stepOneBody: "Gunakan panduan kamera atau pilih foto makanan dari galeri.",
     stepTwoTitle: "Periksa",
-    stepTwoBody: "Periksa makanan yang terdeteksi, porsi, tingkat keyakinan, dan catatan tentang bahan tersembunyi.",
-    stepThreeTitle: "Simpan",
-    stepThreeBody: "Sesuaikan porsi yang kurang tepat, lalu tambahkan makanan ke catatan lokalmu.",
+    stepTwoBody: "Periksa jenis makanan dan porsi yang kamu pilih, serta catatan tentang bahan tersembunyi.",
+    stepThreeTitle: "Sesuaikan",
+    stepThreeBody: "Ubah porsi atau pilihan minyak/saus lalu bandingkan rentang terpandu yang diperbarui.",
     privacyKicker: "Privasi harus terlihat jelas",
     privacyTitle: "Foto makananmu adalah data. Perlakukan dengan tepat.",
     privacyBody: "MVP dirancang dengan pengiriman foto yang disengaja, izin minimal, dan kontrol penghapusan yang jelas. Foto makanan tidak boleh digunakan untuk melatih model tanpa persetujuan terpisah.",
@@ -255,6 +255,8 @@
     faqFourA: "Bukan. Produk hanya memberi estimasi untuk kebugaran umum dan bukan diagnosis, perawatan, pengukuran laboratorium, atau pengganti tenaga profesional.",
     footerTagline: "Titik awal yang praktis dan jujur untuk pencatatan gizi sehari-hari.",
     footerPrivacy: "Privasi",
+    footerTerms: "Ketentuan",
+    footerSupport: "Dukungan",
     footerSource: "Kode sumber",
     footerDisclaimer: "Estimasi untuk kebugaran umum. Bukan saran medis.",
   };
@@ -296,11 +298,11 @@
       button.setAttribute("aria-pressed", String(button.dataset.lang === language));
     });
     document.title = language === "id"
-      ? "MyIdealBody AI — Estimasi gizi dari foto"
-      : "MyIdealBody AI — Photo nutrition estimates";
+      ? "MyIdealBody AI — Demo gizi terpandu"
+      : "MyIdealBody AI — Guided nutrition demo";
     metaDescription.content = language === "id"
-      ? "MyIdealBody AI membantu memperkirakan rentang kalori dan protein dari foto makanan, dengan hasil yang dapat diperiksa untuk makanan sehari-hari di Indonesia."
-      : "MyIdealBody AI helps you estimate calorie and protein ranges from a meal photo, with reviewable results designed for everyday Indonesian food.";
+      ? "Unggah foto makanan untuk rentang kalori dan protein terpandu berdasarkan pilihanmu. Demo saat ini belum mengenali gambar secara visual."
+      : "Upload a meal photo for a guided calorie and protein range based on your choices. The current demo does not visually recognize images.";
     renderDynamicDemoCopy();
     if (persist) {
       try { localStorage.setItem("myidealbody-language", language); } catch (_) { /* Storage is optional. */ }

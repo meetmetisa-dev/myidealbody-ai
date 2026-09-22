@@ -1,6 +1,8 @@
 # MyIdealBody AI
 
-Android-first nutrition tracking that estimates calorie and protein ranges from a meal photo, asks about visually hidden ingredients, and lets the user review detected foods and adjust portions before saving.
+Android-first nutrition-tracking MVP designed for reviewable calorie and protein
+ranges from a meal photo. The current safe beta is an explicitly labeled local
+sample; real photo recognition remains behind a production-readiness gate.
 
 **Live bilingual product preview:** https://meetmetisa-dev.github.io/myidealbody-ai/
 
@@ -14,7 +16,7 @@ This repository contains a bilingual English/Bahasa Indonesia MVP:
 
 ## Current milestone
 
-This is a complete **source MVP for development and closed-beta work**, not a ready-to-publish paid health app. The default backend deliberately returns a fixed demo plate; production model/data validation is still required. In the safe default demo build, the selected photo stays on the device and a generated placeholder is sent to the mock endpoint. Detected portions can be resized or removed, but food renaming and hidden-ingredient recalculation remain locked until catalog search and deterministic recalculation are added. Billing discovers Google Play products and renders Play-localized prices, but the real purchase button stays disabled until per-user authentication and server verification are connected. The three-scan free limit is currently enforced on-device only; production must enforce quota, idempotency, and abuse controls on the server.
+This is a complete **source MVP for development and closed-beta work**, not a ready-to-publish paid health app. The safe default Android demo creates one fixed sample plate entirely on-device: it does not inspect or upload the selected photo, contact an analysis API, initialize Play Billing, consume the scan allowance, or save the sample to the diary. Production model/data validation is still required. Detected portions can be resized or removed, but food renaming and hidden-ingredient recalculation remain locked until catalog search and deterministic recalculation are added. Real billing stays disabled until per-user authentication and server verification are connected. The three-scan free limit for future non-demo analysis is currently enforced on-device only; production must enforce quota, idempotency, and abuse controls on the server.
 
 > **Important:** The included recognition mode is a deterministic demo, not a clinically reliable food-measurement system. A single photo cannot reveal exact weight or hidden oil, sugar, sauces, or coconut milk. The product therefore uses ranges, confidence labels, follow-up questions, and user correction. It is not medical advice.
 
@@ -53,12 +55,25 @@ Install the current stable Flutter SDK and Android Studio, then:
 cd mobile
 flutter pub get
 flutter gen-l10n
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000 --dart-define=DEMO_MODE=true
+flutter run --dart-define=DEMO_MODE=true
 ```
 
 `10.0.2.2` routes the Android emulator to the backend running on the development computer. For a USB-connected physical phone, keep the API bound to the computer and run `adb reverse tcp:8000 tcp:8000`, then launch Flutter with `--dart-define=API_BASE_URL=http://localhost:8000`. This matches the debug-only network policy and avoids exposing the development server to the LAN. Remove the forwarding rule afterward with `adb reverse --remove tcp:8000`. Production builds require a public HTTPS API.
 
-The first Play-enabled build also needs products created in Play Console, per-user backend authentication, server-side entitlement storage, and a signed internal-testing release. Until secure verification and Play products are configured, the app remains usable in clearly labeled demo/free mode and cannot start a real purchase.
+A future paid Play build also needs products created in Play Console, per-user
+backend authentication, and server-side entitlement storage. Until secure
+verification and Play products are configured, the app remains usable in
+clearly labeled demo/free mode and cannot start a real purchase.
+
+For the current safe beta, use the manual **Build signed Play AAB** GitHub
+workflow in `local_demo` mode. It builds the fixed on-device demonstration and
+does not need an API. Signing-secret setup and local signing commands are in
+[`mobile/README.md`](mobile/README.md#build-a-play-store-bundle); the new-personal-account
+submission sequence is in
+[`docs/play-store/NEW_PERSONAL_ACCOUNT_CHECKLIST.md`](docs/play-store/NEW_PERSONAL_ACCOUNT_CHECKLIST.md).
+The 512 px Play icon and 1024 × 500 feature graphic are ready in
+[`store_assets/`](store_assets/); capture authentic phone screenshots from the
+signed release build rather than inventing mock screenshots.
 
 ## Preview the website
 

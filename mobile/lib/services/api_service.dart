@@ -36,6 +36,8 @@ class ApiService {
   final bool _authProviderConfigured;
   final bool _demoMode;
 
+  bool get isDemoMode => _demoMode;
+
   static Future<String?> _noAuthToken() async => null;
 
   Future<bool> canVerifyPurchases() async {
@@ -49,23 +51,16 @@ class ApiService {
     required String locale,
     required String source,
   }) async {
-    late final http.MultipartFile imagePart;
     if (_demoMode) {
-      imagePart = http.MultipartFile.fromBytes(
-        'image',
-        base64Decode(_demoPlaceholderPng),
-        filename: 'demo-placeholder.png',
-        contentType: MediaType('image', 'png'),
-      );
-    } else {
-      final contentType = await _detectImageMediaType(imagePath);
-      imagePart = await http.MultipartFile.fromPath(
-        'image',
-        imagePath,
-        filename: _safeUploadFilename(contentType),
-        contentType: contentType,
-      );
+      return _localDemoAnalysis(locale);
     }
+    final contentType = await _detectImageMediaType(imagePath);
+    final imagePart = await http.MultipartFile.fromPath(
+      'image',
+      imagePath,
+      filename: _safeUploadFilename(contentType),
+      contentType: contentType,
+    );
     final request = http.MultipartRequest(
       'POST',
       Uri.parse('$_baseUrl/v1/analyze'),
@@ -203,10 +198,96 @@ class ApiService {
         'webp' => 'meal-upload.webp',
         _ => 'meal-upload.bin',
       };
-}
 
-// 64 × 64 neutral PNG used only in the default fixed-result demo mode.
-const _demoPlaceholderPng =
-    'iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAAT0lEQVR42u3PQQkAAAgE'
-    'sOtfVT82MIJvYbACS0+9FgEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB'
-    'AQEBAQEBAQEBAQGBywIrYYKVXSP0LAAAAABJRU5ErkJggg==';
+  MealAnalysis _localDemoAnalysis(String locale) {
+    final indonesian = locale.toLowerCase().startsWith('id');
+    return MealAnalysis(
+      analysisId: 'local-demo-fixed',
+      calories: const NutrientRange(min: 388, max: 700, estimated: 544),
+      protein: const NutrientRange(min: 24.3, max: 44.7, estimated: 34.5),
+      carbs: const NutrientRange(min: 47.5, max: 82.8, estimated: 65.2),
+      fat: const NutrientRange(min: 10.6, max: 20.1, estimated: 15.3),
+      confidence: .72,
+      foods: [
+        FoodEstimate(
+          id: 'nasi_putih',
+          name: indonesian ? 'Nasi putih' : 'Cooked white rice',
+          quantity: 180,
+          unit: 'g',
+          calories: const NutrientRange(min: 174, max: 294, estimated: 234),
+          protein: const NutrientRange(min: 3.2, max: 5.4, estimated: 4.3),
+          carbs: const NutrientRange(min: 37.8, max: 63.7, estimated: 50.8),
+          fat: const NutrientRange(min: .4, max: .7, estimated: .5),
+          confidence: .82,
+        ),
+        FoodEstimate(
+          id: 'ayam_goreng',
+          name: indonesian ? 'Ayam goreng' : 'Fried chicken',
+          quantity: 100,
+          unit: 'g',
+          calories: const NutrientRange(min: 173, max: 319, estimated: 246),
+          protein: const NutrientRange(min: 19, max: 35, estimated: 27),
+          carbs: const NutrientRange(min: 5.6, max: 10.4, estimated: 8),
+          fat: const NutrientRange(min: 8.4, max: 15.6, estimated: 12),
+          confidence: .72,
+        ),
+        FoodEstimate(
+          id: 'sayur_campur',
+          name: indonesian ? 'Sayur campur tumis' : 'Stir-fried mixed vegetables',
+          quantity: 80,
+          unit: 'g',
+          calories: const NutrientRange(min: 41, max: 87, estimated: 64),
+          protein: const NutrientRange(min: 2.1, max: 4.3, estimated: 3.2),
+          carbs: const NutrientRange(min: 4.1, max: 8.7, estimated: 6.4),
+          fat: const NutrientRange(min: 1.8, max: 3.8, estimated: 2.8),
+          confidence: .58,
+        ),
+      ],
+      caveats: indonesian
+          ? const [
+              'Ini adalah perkiraan, bukan pengukuran medis.',
+              'Minyak, santan, gula, dan bahan tersembunyi mungkin tidak terlihat di foto.',
+              'Data gizi demo bersifat perkiraan; periksa makanan dan porsinya.',
+            ]
+          : const [
+              'This is an estimate, not a medical measurement.',
+              'Oil, coconut milk, sugar, and other hidden ingredients may not be visible.',
+              'Demo nutrition data is approximate; review the foods and portions.',
+            ],
+      questions: [
+        FollowUpQuestion(
+          id: 'confirm_portion',
+          type: 'portion_confirmation',
+          prompt: indonesian
+              ? 'Apakah perkiraan ukuran porsinya sudah benar?'
+              : 'Does the estimated portion size look right?',
+          options: [
+            FollowUpOption(id: 'smaller', label: indonesian ? 'Lebih kecil' : 'Smaller'),
+            FollowUpOption(id: 'correct', label: indonesian ? 'Sudah sesuai' : 'Looks right'),
+            FollowUpOption(id: 'larger', label: indonesian ? 'Lebih besar' : 'Larger'),
+          ],
+        ),
+        FollowUpQuestion(
+          id: 'hidden_oil',
+          type: 'single_choice',
+          prompt: indonesian
+              ? 'Berapa banyak minyak atau mentega tambahan yang digunakan?'
+              : 'How much added oil or butter was used?',
+          options: [
+            FollowUpOption(id: 'none', label: indonesian ? 'Tidak ada' : 'None'),
+            FollowUpOption(
+              id: 'one_tsp',
+              label: indonesian ? 'Sekitar 1 sendok teh' : 'About 1 teaspoon',
+            ),
+            FollowUpOption(
+              id: 'one_tbsp',
+              label: indonesian ? 'Sekitar 1 sendok makan' : 'About 1 tablespoon',
+            ),
+            FollowUpOption(id: 'unknown', label: indonesian ? 'Tidak yakin' : 'Not sure'),
+          ],
+        ),
+      ],
+      provider: 'mock_demo',
+    );
+  }
+}

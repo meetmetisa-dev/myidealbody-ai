@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+import struct
 import sys
 from pathlib import Path
 
@@ -34,9 +35,72 @@ required_files = (
     "mobile/test/nutrition_models_test.dart",
     "docs/PLAY_STORE_LAUNCH.md",
     "docs/PRIVACY_SECURITY.md",
+    ".github/workflows/build-play-aab.yml",
+    ".github/workflows/lock-flutter-dependencies.yml",
+    "scripts/validate_play_release.py",
+    "scripts/check_production_health.py",
+    "website/privacy.html",
+    "website/terms.html",
+    "website/support.html",
+    "docs/play-store/LISTING_COPY_EN_ID.md",
+    "docs/play-store/NEW_PERSONAL_ACCOUNT_CHECKLIST.md",
+    "docs/play-store/DATA_SAFETY_DRAFT.md",
+    "docs/play-store/HEALTH_APPS_DECLARATION_DRAFT.md",
+    "docs/play-store/PRIVACY_PROVIDER_CHECKLIST.md",
+    "store_assets/play-icon-512.png",
+    "store_assets/feature-graphic-1024x500.png",
 )
 for item in required_files:
     require(item)
+
+
+def validate_png(
+    relative: str,
+    *,
+    width: int,
+    height: int,
+    color_type: int,
+    maximum_bytes: int,
+) -> None:
+    path = ROOT / relative
+    try:
+        data = path.read_bytes()
+    except OSError:
+        return
+    if len(data) > maximum_bytes:
+        ERRORS.append(f"{relative} exceeds the Play asset size limit")
+    if len(data) < 33 or data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
+        ERRORS.append(f"{relative} is not a valid PNG with an IHDR header")
+        return
+    actual_width, actual_height, bit_depth, actual_color_type = struct.unpack(
+        ">IIBB", data[16:26]
+    )
+    if (actual_width, actual_height) != (width, height):
+        ERRORS.append(
+            f"{relative} must be {width}x{height}, got "
+            f"{actual_width}x{actual_height}"
+        )
+    if bit_depth != 8 or actual_color_type != color_type:
+        ERRORS.append(
+            f"{relative} must use 8-bit PNG color type {color_type}, got "
+            f"bit depth {bit_depth} and color type {actual_color_type}"
+        )
+
+
+validate_png(
+    "store_assets/play-icon-512.png",
+    width=512,
+    height=512,
+    color_type=6,
+    maximum_bytes=1_048_576,
+)
+validate_png(
+    "store_assets/feature-graphic-1024x500.png",
+    width=1024,
+    height=500,
+    color_type=2,
+    maximum_bytes=15_728_640,
+)
 
 
 def read_json(relative: str) -> dict:
@@ -109,6 +173,37 @@ if android_build.is_file():
         ERRORS.append("Android targetSdk must be 36")
     if not re.search(r"compileSdk\s*=\s*36\b", build_text):
         ERRORS.append("Android compileSdk must be 36")
+    if not re.search(r'applicationId\s*=\s*"com\.myidealbody\.ai"', build_text):
+        ERRORS.append("permanent Android applicationId must remain com.myidealbody.ai")
+
+app_config = ROOT / "mobile/lib/core/app_config.dart"
+if app_config.is_file():
+    app_config_text = app_config.read_text(encoding="utf-8")
+    if not re.search(
+        r"androidPackageName\s*=\s*'com\.myidealbody\.ai'",
+        app_config_text,
+    ):
+        ERRORS.append("Dart Android package name must remain com.myidealbody.ai")
+    for required_url in (
+        "https://meetmetisa-dev.github.io/myidealbody-ai/privacy.html",
+        "https://meetmetisa-dev.github.io/myidealbody-ai/terms.html",
+        "https://meetmetisa-dev.github.io/myidealbody-ai/support.html",
+    ):
+        if required_url not in app_config_text:
+            ERRORS.append(f"missing public mobile disclosure URL: {required_url}")
+
+release_workflow = ROOT / ".github/workflows/build-play-aab.yml"
+if release_workflow.is_file():
+    workflow_text = release_workflow.read_text(encoding="utf-8")
+    if '--dart-define=APP_VERSION="$VERSION_NAME"' not in workflow_text:
+        ERRORS.append("signed AAB workflow must align the displayed app version")
+
+main_activity = ROOT / "mobile/android/app/src/main/kotlin/com/myidealbody/ai/MainActivity.kt"
+if main_activity.is_file() and not re.search(
+    r"package\s+com\.myidealbody\.ai\b",
+    main_activity.read_text(encoding="utf-8"),
+):
+    ERRORS.append("MainActivity package must remain com.myidealbody.ai")
 
 joined_config = "\n".join(
     path.read_text(encoding="utf-8")

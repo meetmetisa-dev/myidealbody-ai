@@ -128,9 +128,12 @@ class HomeScreen extends StatelessWidget {
                   ],
                   const SizedBox(height: 20),
                   _ScanCard(
-                    scansLabel: controller.isPro
-                        ? l10n.unlimitedScans
-                        : l10n.scansRemaining(controller.freeScansRemaining),
+                    scansLabel: controller.api.isDemoMode
+                        ? l10n.localDemoLabel
+                        : controller.isPro
+                            ? l10n.unlimitedScans
+                            : l10n.scansRemaining(controller.freeScansRemaining),
+                    isDemo: controller.api.isDemoMode,
                     onCamera: () => _openScan(context, openGallery: false),
                     onGallery: () => _openScan(context, openGallery: true),
                   ),
@@ -178,7 +181,7 @@ class HomeScreen extends StatelessWidget {
       );
       return;
     }
-    if (!controller.cloudAnalysisConsent) {
+    if (!controller.api.isDemoMode && !controller.cloudAnalysisConsent) {
       final allowed = await showDialog<bool>(
         context: context,
         builder: (dialogContext) => AlertDialog(
@@ -212,11 +215,13 @@ class HomeScreen extends StatelessWidget {
 class _ScanCard extends StatelessWidget {
   const _ScanCard({
     required this.scansLabel,
+    required this.isDemo,
     required this.onCamera,
     required this.onGallery,
   });
 
   final String scansLabel;
+  final bool isDemo;
   final VoidCallback onCamera;
   final VoidCallback onGallery;
 
@@ -257,7 +262,7 @@ class _ScanCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            l10n.scanMealSubtitle,
+            isDemo ? l10n.demoScanSubtitle : l10n.scanMealSubtitle,
             style: const TextStyle(color: Color(0xFFDDF4EE), height: 1.4),
           ),
           const SizedBox(height: 20),

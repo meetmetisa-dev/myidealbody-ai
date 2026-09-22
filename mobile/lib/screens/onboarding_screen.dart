@@ -89,6 +89,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 itemBuilder: (context, index) => _OnboardingPage(
                   item: items[index],
                   showConsent: index == items.length - 1,
+                  requiresCloudConsent: !controller.api.isDemoMode,
                   consent: _consent,
                   onConsentChanged: (value) => setState(() => _consent = value),
                 ),
@@ -126,7 +127,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           curve: Curves.easeOutCubic,
                         );
                       } else {
-                        controller.completeOnboarding(consent: _consent);
+                        controller.completeOnboarding(
+                          consent: controller.api.isDemoMode ? false : _consent,
+                        );
                       }
                     },
                     child: Text(
@@ -149,12 +152,14 @@ class _OnboardingPage extends StatelessWidget {
   const _OnboardingPage({
     required this.item,
     required this.showConsent,
+    required this.requiresCloudConsent,
     required this.consent,
     required this.onConsentChanged,
   });
 
   final _OnboardingItem item;
   final bool showConsent;
+  final bool requiresCloudConsent;
   final bool consent;
   final ValueChanged<bool> onConsentChanged;
 
@@ -192,17 +197,22 @@ class _OnboardingPage extends StatelessWidget {
             const SizedBox(height: 28),
             Card(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 16, 14),
+                padding: requiresCloudConsent
+                    ? const EdgeInsets.fromLTRB(8, 8, 16, 14)
+                    : const EdgeInsets.all(18),
                 child: Column(
                   children: [
-                    CheckboxListTile(
-                      value: consent,
-                      onChanged: (value) => onConsentChanged(value ?? false),
-                      title: Text(l10n.cloudConsentLabel),
-                      controlAffinity: ListTileControlAffinity.leading,
-                    ),
+                    if (requiresCloudConsent)
+                      CheckboxListTile(
+                        value: consent,
+                        onChanged: (value) => onConsentChanged(value ?? false),
+                        title: Text(l10n.cloudConsentLabel),
+                        controlAffinity: ListTileControlAffinity.leading,
+                      ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      padding: requiresCloudConsent
+                          ? const EdgeInsets.symmetric(horizontal: 12)
+                          : EdgeInsets.zero,
                       child: Text(
                         l10n.cloudConsentHint,
                         style: Theme.of(context).textTheme.bodySmall,
@@ -240,4 +250,3 @@ class _OnboardingItem {
   final String body;
   final Color accent;
 }
-

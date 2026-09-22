@@ -15,10 +15,10 @@ class SubscriptionService extends ChangeNotifier {
     InAppPurchase? billing,
   })  : _api = api,
         _onEntitlementChanged = onEntitlementChanged,
-        _billing = billing ?? InAppPurchase.instance;
+        _billing = billing;
 
   final ApiService _api;
-  final InAppPurchase _billing;
+  InAppPurchase? _billing;
   final Future<void> Function(bool active) _onEntitlementChanged;
 
   StreamSubscription<List<PurchaseDetails>>? _purchaseSubscription;
@@ -40,8 +40,17 @@ class SubscriptionService extends ChangeNotifier {
 
   Future<void> initialize() async {
     if (_initializing) return;
+    if (_api.isDemoMode) {
+      verificationReady = false;
+      products = const [];
+      errorMessage = null;
+      state = BillingState.unavailable;
+      notifyListeners();
+      return;
+    }
     _initializing = true;
-    _purchaseSubscription ??= _billing.purchaseStream.listen(
+    final billing = _billing ??= InAppPurchase.instance;
+    _purchaseSubscription ??= billing.purchaseStream.listen(
       _handlePurchases,
       onError: (Object error) {
         state = BillingState.error;
@@ -52,13 +61,13 @@ class SubscriptionService extends ChangeNotifier {
 
     try {
       verificationReady = await _api.canVerifyPurchases();
-      if (!await _billing.isAvailable()) {
+      if (!await billing.isAvailable()) {
         state = BillingState.unavailable;
         notifyListeners();
         return;
       }
 
-      final response = await _billing.queryProductDetails({
+      final response = await billing.queryProductDetails({
         AppConfig.monthlyProductId,
         AppConfig.annualProductId,
       });
@@ -66,7 +75,7 @@ class SubscriptionService extends ChangeNotifier {
       errorMessage = response.error?.message;
       state = products.isEmpty ? BillingState.unavailable : BillingState.ready;
       if (verificationReady) {
-        await _billing.restorePurchases();
+        await billing.restorePurchases();
       }
     } on Exception catch (error) {
       state = BillingState.error;
@@ -78,6 +87,13 @@ class SubscriptionService extends ChangeNotifier {
   }
 
   Future<void> purchase(ProductDetails product) async {
+    final billing = _billing;
+    if (_api.isDemoMode || billing == null) {
+      state = BillingState.unavailable;
+      errorMessage = null;
+      notifyListeners();
+      return;
+    }
     if (!verificationReady) {
       state = BillingState.error;
       errorMessage = 'Secure purchase verification is not configured.';
@@ -88,7 +104,7 @@ class SubscriptionService extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
-      final started = await _billing.buyNonConsumable(
+      final started = await billing.buyNonConsumable(
         purchaseParam: PurchaseParam(productDetails: product),
       );
       if (started) return;
@@ -102,9 +118,10 @@ class SubscriptionService extends ChangeNotifier {
   }
 
   Future<void> restore() async {
-    if (!verificationReady) return;
+    final billing = _billing;
+    if (_api.isDemoMode || billing == null || !verificationReady) return;
     try {
-      await _billing.restorePurchases();
+      await billing.restorePurchases();
     } on Exception catch (error) {
       state = BillingState.error;
       errorMessage = error.toString();
@@ -113,6 +130,8 @@ class SubscriptionService extends ChangeNotifier {
   }
 
   Future<void> _handlePurchases(List<PurchaseDetails> purchases) async {
+    final billing = _billing;
+    if (billing == null) return;
     for (final purchase in purchases) {
       var verifiedPurchase = false;
       switch (purchase.status) {
@@ -144,7 +163,7 @@ class SubscriptionService extends ChangeNotifier {
       }
 
       if (verifiedPurchase && purchase.pendingCompletePurchase) {
-        await _billing.completePurchase(purchase);
+        await billing.completePurchase(purchase);
       }
     }
     notifyListeners();

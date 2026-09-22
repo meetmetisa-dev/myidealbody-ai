@@ -7,6 +7,35 @@ import 'package:http/testing.dart';
 import 'package:myidealbody_ai/services/api_service.dart';
 
 void main() {
+  test('local demo returns a fixed result without reading a file or using HTTP',
+      () async {
+    var requestCount = 0;
+    final client = MockClient((request) async {
+      requestCount += 1;
+      return http.Response('unexpected', 500);
+    });
+    final service = ApiService(
+      client: client,
+      baseUrl: 'not-required-in-local-demo',
+      demoMode: true,
+    );
+
+    final result = await service.analyzeMeal(
+      imagePath: '/this/file/does/not/exist.jpg',
+      locale: 'id-ID',
+      source: 'gallery',
+    );
+
+    expect(requestCount, 0);
+    expect(service.isDemoMode, isTrue);
+    expect(result.analysisId, 'local-demo-fixed');
+    expect(result.provider, 'mock_demo');
+    expect(result.calories.estimated, 544);
+    expect(result.foods, hasLength(3));
+    expect(result.foods.first.name, 'Nasi putih');
+    expect(result.caveats.first, contains('perkiraan'));
+  });
+
   test('uploads a JPEG with an explicit image content type', () async {
     final directory = await Directory.systemTemp.createTemp('myidealbody-api-test');
     addTearDown(() => directory.delete(recursive: true));

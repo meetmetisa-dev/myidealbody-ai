@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="MyIdealBody AI helps you estimate calorie and protein ranges from a meal photo, with editable results designed for everyday Indonesian food."
+      content="Upload a meal photo for a guided calorie and protein range based on your choices. The current demo does not visually recognize images."
       id="meta-description"
     />
     <meta name="theme-color" content="#173b35" />
@@ -13,9 +13,9 @@
     <meta property="og:title" content="MyIdealBody AI — A clearer starting point for every plate" />
     <meta
       property="og:description"
-      content="Photo-based calorie and protein estimates, built with Indonesian meals and honest uncertainty in mind."
+      content="A bilingual guided nutrition demo for Indonesian meals. Current photo recognition is not active."
     />
-    <title>MyIdealBody AI — Photo nutrition estimates</title>
+    <title>MyIdealBody AI — Guided nutrition demo</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
     <script src="app.js" defer></script>
@@ -77,7 +77,7 @@
             </p>
             <h1 data-i18n="heroTitle">A clearer starting point for every plate.</h1>
             <p class="hero-intro" data-i18n="heroBody">
-              Photograph a meal to estimate calorie and protein ranges, review what was detected, and adjust the result before saving.
+              Upload a meal photo and build a calorie and protein range from your own selections. The current public demo previews the photo locally and does not visually recognize it.
             </p>
             <div class="hero-actions">
               <a class="button button-primary" href="#demo">
@@ -92,7 +92,7 @@
             </p>
             <ul class="hero-trust" aria-label="Product principles" data-i18n-aria="productPrinciples">
               <li><span aria-hidden="true">✓</span><span data-i18n="trustRanges">Honest ranges</span></li>
-              <li><span aria-hidden="true">✓</span><span data-i18n="trustEditable">Review before saving</span></li>
+              <li><span aria-hidden="true">✓</span><span data-i18n="trustEditable">Review and adjust</span></li>
               <li><span aria-hidden="true">✓</span><span data-i18n="trustLocal">Indonesian meal focus</span></li>
             </ul>
           </div>
@@ -178,8 +178,8 @@
             <article class="feature-card reveal reveal-delay">
               <div class="feature-number">03</div>
               <div class="feature-icon icon-edit" aria-hidden="true"></div>
-              <h3 data-i18n="featureThreeTitle">Correct before saving</h3>
-              <p data-i18n="featureThreeBody">Adjust detected portions and review prompts about oil, santan, or sweet sauce. Prompt-based recalculation is planned.</p>
+              <h3 data-i18n="featureThreeTitle">Review and adjust</h3>
+              <p data-i18n="featureThreeBody">Adjust the selected portion and review prompts about oil, santan, or sweet sauce. Visual detection and prompt-based recalculation are planned.</p>
             </article>
           </div>
         </div>
@@ -381,7 +381,7 @@
         <div class="container">
           <div class="section-heading centered reveal">
             <p class="section-kicker" data-i18n="howKicker">One minute, three steps</p>
-            <h2 data-i18n="howTitle">From plate to diary—without the spreadsheet feeling.</h2>
+            <h2 data-i18n="howTitle">From plate to a reviewed guided range.</h2>
           </div>
           <ol class="steps-grid">
             <li class="step-card reveal">
@@ -392,12 +392,12 @@
             <li class="step-card reveal reveal-delay-short">
               <span class="step-index">2</span>
               <h3 data-i18n="stepTwoTitle">Review</h3>
-              <p data-i18n="stepTwoBody">Check detected foods, portions, confidence, and hidden-ingredient prompts.</p>
+              <p data-i18n="stepTwoBody">Review the meal and portion you selected, plus the hidden-ingredient prompt.</p>
             </li>
             <li class="step-card reveal reveal-delay">
               <span class="step-index">3</span>
-              <h3 data-i18n="stepThreeTitle">Save</h3>
-              <p data-i18n="stepThreeBody">Correct anything that looks wrong, then add the meal to your local diary.</p>
+              <h3 data-i18n="stepThreeTitle">Adjust</h3>
+              <p data-i18n="stepThreeBody">Change the portion or oil/sauce choice and compare the updated guided range.</p>
             </li>
           </ol>
         </div>
@@ -523,7 +523,9 @@
           <a href="#demo" data-i18n="navDemo">Demo</a>
           <a href="#pricing" data-i18n="navPricing">Pricing</a>
           <a href="#status" data-i18n="navStatus">Build status</a>
-          <a href="#privacy" data-i18n="footerPrivacy">Privacy</a>
+          <a href="privacy.html" data-i18n="footerPrivacy">Privacy</a>
+          <a href="terms.html" data-i18n="footerTerms">Terms</a>
+          <a href="support.html" data-i18n="footerSupport">Support</a>
           <a class="repo-link" href="#top" data-i18n="footerSource">Source code</a>
         </div>
       </div>

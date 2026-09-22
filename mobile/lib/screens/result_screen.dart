@@ -179,45 +179,47 @@ class _ResultScreenState extends State<ResultScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: confidenceColor.withValues(alpha: .1),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: confidenceColor.withValues(alpha: .3)),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  confidence >= .5
-                      ? Icons.fact_check_outlined
-                      : Icons.help_outline_rounded,
-                  color: confidenceColor,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${l10n.confidence}: $confidenceText',
-                        style: TextStyle(
-                          color: confidenceColor,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      if (confidence < .5) ...[
-                        const SizedBox(height: 4),
-                        Text(l10n.reviewLowConfidence),
-                      ],
-                    ],
+          if (!isDemo) ...[
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: confidenceColor.withValues(alpha: .1),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: confidenceColor.withValues(alpha: .3)),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    confidence >= .5
+                        ? Icons.fact_check_outlined
+                        : Icons.help_outline_rounded,
+                    color: confidenceColor,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${l10n.confidence}: $confidenceText',
+                          style: TextStyle(
+                            color: confidenceColor,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        if (confidence < .5) ...[
+                          const SizedBox(height: 4),
+                          Text(l10n.reviewLowConfidence),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 22),
+            const SizedBox(height: 22),
+          ],
           Text(l10n.estimatedRange, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 10),
           Row(
@@ -261,7 +263,10 @@ class _ResultScreenState extends State<ResultScreen> {
             ),
           ),
           const SizedBox(height: 24),
-          Text(l10n.detectedFoods, style: Theme.of(context).textTheme.titleLarge),
+          Text(
+            isDemo ? l10n.sampleFoods : l10n.detectedFoods,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           const SizedBox(height: 8),
           ...List.generate(
             _foods.length,

@@ -187,7 +187,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
 
   Future<void> _analyze(String imagePath, {required String source}) async {
     final controller = AppScope.of(context);
-    if (!controller.cloudAnalysisConsent) return;
+    if (!controller.api.isDemoMode && !controller.cloudAnalysisConsent) return;
     setState(() {
       _phase = _ScanPhase.analyzing;
       _error = null;
@@ -302,6 +302,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         _ScanPhase.camera => _buildCamera(context),
         _ScanPhase.analyzing => _AnalyzingView(
             imagePath: null,
+            isDemo: AppScope.of(context).api.isDemoMode,
             onClose: () => Navigator.pop(context),
           ),
         _ScanPhase.error => _ErrorView(
@@ -416,7 +417,9 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Text(
-                  l10n.guidanceNotAnalysis,
+                  AppScope.of(context).api.isDemoMode
+                      ? l10n.demoCameraNotice
+                      : l10n.guidanceNotAnalysis,
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.white70, fontSize: 12),
                 ),
@@ -537,9 +540,14 @@ class _StartingView extends StatelessWidget {
 }
 
 class _AnalyzingView extends StatelessWidget {
-  const _AnalyzingView({required this.imagePath, required this.onClose});
+  const _AnalyzingView({
+    required this.imagePath,
+    required this.isDemo,
+    required this.onClose,
+  });
 
   final String? imagePath;
+  final bool isDemo;
   final VoidCallback onClose;
 
   @override
@@ -571,7 +579,7 @@ class _AnalyzingView extends StatelessWidget {
                       ),
                       const SizedBox(height: 28),
                       Text(
-                        l10n.analyzingTitle,
+                        isDemo ? l10n.demoPreparingTitle : l10n.analyzingTitle,
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                               color: Colors.white,
@@ -579,7 +587,7 @@ class _AnalyzingView extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        l10n.analyzingBody,
+                        isDemo ? l10n.demoPreparingBody : l10n.analyzingBody,
                         textAlign: TextAlign.center,
                         style: const TextStyle(color: Colors.white70),
                       ),

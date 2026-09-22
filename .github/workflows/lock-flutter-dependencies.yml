@@ -1,0 +1,51 @@
+name: Lock Flutter dependencies
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - mobile/pubspec.yaml
+      - .github/workflows/lock-flutter-dependencies.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lock-flutter-dependencies
+  cancel-in-progress: false
+
+jobs:
+  lock:
+    name: Generate mobile/pubspec.lock
+    if: ${{ github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out main
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - name: Set up Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          flutter-version: "3.47.5"
+          channel: stable
+          cache: true
+      - name: Resolve the application lockfile
+        working-directory: mobile
+        run: flutter pub get
+      - name: Commit only the generated lockfile when changed
+        run: |
+          set -euo pipefail
+          test -s mobile/pubspec.lock
+          git add -- mobile/pubspec.lock
+          if git diff --cached --quiet; then
+            echo "mobile/pubspec.lock is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Lock Flutter dependencies"
+          git push origin HEAD:main

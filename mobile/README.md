@@ -2,7 +2,7 @@
 
 An Android-first MVP for estimating calories and protein from a meal photo. The app ships with English and Bahasa Indonesia, heuristic ranges, reviewable foods, editable portions, a local diary, camera/gallery input, and Google Play subscription plumbing.
 
-This client is deliberately honest about what computer vision can and cannot see. Camera guidance checks only light and framing; nutrition is estimated after a still image is uploaded. Results default to ranges and must be reviewed before saving.
+This client separates a fully local fixed-result demo from the optional real-photo path. Camera guidance checks only light and framing. In production mode, nutrition is estimated after a still image is uploaded; results default to ranges and must be reviewed before saving.
 
 ## What works
 
@@ -10,7 +10,7 @@ This client is deliberately honest about what computer vision can and cannot see
 - privacy-first onboarding and a persistent language choice
 - Material 3 home dashboard with calorie/protein goals
 - camera capture, gallery picker, plate guide, and sampled brightness guidance
-- safe default demo mode that sends a generated placeholder—not the selected photo—to `POST /v1/analyze`
+- safe default demo mode that returns a clearly labeled fixed sample entirely on-device, with no API or file read
 - production-mode multipart upload with explicit JPEG/PNG/WebP MIME detection
 - calorie, protein, carbohydrate, and fat ranges plus confidence
 - editable portions with recalculated totals; food renaming stays locked until catalog remapping exists
@@ -26,7 +26,7 @@ This client is deliberately honest about what computer vision can and cannot see
 - Flutter 3.47.5 stable (Dart 3.13.4) or a compatible newer stable version
 - Android SDK 36
 - JDK 17
-- a running MyIdealBody API (the sibling `backend` project)
+- a running MyIdealBody API (the sibling `backend` project) only for `DEMO_MODE=false`
 
 The Android host uses AGP 8.13.2, Gradle 8.14.4, Kotlin 2.3.21, `minSdk 24`, and `targetSdk 36`.
 
@@ -35,10 +35,20 @@ The Android host uses AGP 8.13.2, Gradle 8.14.4, Kotlin 2.3.21, `minSdk 24`, and
 ```bash
 flutter pub get
 flutter gen-l10n
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000 --dart-define=DEMO_MODE=true
+flutter run --dart-define=DEMO_MODE=true
 ```
 
-`10.0.2.2` reaches the host machine from the Android emulator. Debug builds allow cleartext HTTP only for `10.0.2.2` and `localhost`; the release manifest refuses cleartext traffic. Use an HTTPS API URL for physical-device and production builds.
+The local demo needs no backend or API URL. It does not read the selected image during analysis, make an analysis request, initialize Play Billing, consume the scan allowance, or allow its fixed sample to be saved.
+
+For a reviewed development build of the real-photo path, `10.0.2.2` reaches the host machine from the Android emulator:
+
+```bash
+flutter run \
+  --dart-define=API_BASE_URL=http://10.0.2.2:8000 \
+  --dart-define=DEMO_MODE=false
+```
+
+Debug builds allow cleartext HTTP only for `10.0.2.2` and `localhost`; the release manifest refuses cleartext traffic. Use an HTTPS API origin without `/v1` for physical-device and production builds.
 
 For a USB-connected Android phone running the debug build, keep the development
 API on the computer and forward it through Android Debug Bridge:
@@ -47,13 +57,13 @@ API on the computer and forward it through Android Debug Bridge:
 adb reverse tcp:8000 tcp:8000
 flutter run \
   --dart-define=API_BASE_URL=http://localhost:8000 \
-  --dart-define=DEMO_MODE=true
+  --dart-define=DEMO_MODE=false
 ```
 
 This avoids exposing the development server to the local network. Remove the
 forward later with `adb reverse --remove tcp:8000`.
 
-`DEMO_MODE` defaults to `true`: the app keeps the selected image on-device and sends a neutral generated placeholder to the fixed-result backend. Set `--dart-define=DEMO_MODE=false` only for a reviewed build connected to a real recognition provider with final privacy disclosures.
+`DEMO_MODE` defaults to `true`: the app keeps the selected image on-device and returns its bundled sample without HTTP. Set `--dart-define=DEMO_MODE=false` only for a reviewed build connected to a real recognition provider with final privacy disclosures.
 
 The included standard Gradle wrapper bootstraps Gradle 8.14.4. Do not regenerate
 the Android host with `flutter create` unless you intentionally preserve and
@@ -62,7 +72,7 @@ method channel from this repository.
 
 ## API contract
 
-The client sends a multipart request:
+With `DEMO_MODE=false`, the client sends a multipart request:
 
 - `image`: JPEG, PNG, or WebP
 - `locale`: `en` or `id`
@@ -145,8 +155,51 @@ CI runs those checks on Flutter 3.47.5. This workspace did not have Flutter or D
 ## Build a Play Store bundle
 
 Google Play accepts a signed Android App Bundle (`.aab`), not this repository's
-source ZIP. Confirm the final package name (`com.myidealbody.ai`) before the
-first Play upload because changing it later creates a different app.
+source ZIP. The permanent package name is confirmed as `com.myidealbody.ai`.
+Do not change it: a different application ID creates a different Play app and
+cannot update the existing listing.
+
+### Secure manual GitHub build
+
+The manual **Build signed Play AAB** workflow uses the protected `play-release`
+environment, is restricted to `main`, and never creates a signing key. Configure
+these GitHub secrets in that environment (or as repository secrets if the
+environment has no same-named override):
+
+- `ANDROID_UPLOAD_KEYSTORE_BASE64`
+- `ANDROID_UPLOAD_STORE_PASSWORD`
+- `ANDROID_UPLOAD_KEY_ALIAS`
+- `ANDROID_UPLOAD_KEY_PASSWORD`
+- `ANDROID_UPLOAD_CERT_SHA256` (optional but recommended wrong-key guard)
+- `PRODUCTION_API_BASE_URL` (required only for `production_photo`; an HTTPS
+  origin such as `https://api.example.org`, without `/v1`, credentials, query,
+  or fragment)
+
+Protect `play-release` with required reviewers and a `main` deployment-branch
+rule. Run the workflow with a new semantic `version_name` and strictly
+increasing integer `version_code`:
+
+- `local_demo` is the safe default. Confirm
+  `LOCAL_DEMO_INTERNAL_OR_CLOSED_TEST`; it builds with `DEMO_MODE=true` and no
+  API dependency. Use it only for Internal or Closed Testing with demo-accurate
+  listing and declarations.
+- `production_photo` requires the exact
+  `BUILD_SIGNED_REAL_PHOTO_AAB` confirmation, the fixed API secret, and a health
+  endpoint reporting the real provider. A successful build is not proof that
+  the provider, catalog, privacy disclosures, billing, or Data Safety answers
+  are production-ready.
+
+The workflow uploads the signed `.aab` and its SHA-256 checksum as a GitHub
+Actions artifact for seven days. Anyone authorized to read workflow artifacts
+for this repository may download it. The workflow does not publish to Google
+Play.
+
+The **Lock Flutter dependencies** workflow uses the pinned Flutter version and
+commits only `mobile/pubspec.lock` when `pubspec.yaml` changes. The signed-AAB
+workflow refuses to run without that committed lockfile. Review dependency
+changes before any production build.
+
+### Local signing
 
 Create and securely back up an upload keystore outside the repository:
 
@@ -179,16 +232,17 @@ jarsigner -verify -verbose -certs \
   build/app/outputs/bundle/release/app-release.aab
 ```
 
-The release build now fails deliberately when `android/key.properties` is
-absent, preventing an unsigned bundle from being mistaken for a Play-ready
-artifact. Increment the `+1` build number in `pubspec.yaml` for every subsequent
-Play upload.
+The release build fails deliberately when neither secure CI signing variables
+nor `android/key.properties` are configured, preventing an unsigned bundle from
+being mistaken for a Play-ready artifact. The manual workflow supplies version
+name/code inputs; for local builds, increment the `+1` build number in
+`pubspec.yaml` for every subsequent Play upload.
 
 ## Before Play Store release
 
 - replace the mock recognizer and benchmark it on labeled Indonesian meals
 - obtain lawful nutrition data and document provenance (especially TKPI use)
-- add production privacy-policy, terms, and support URLs
+- verify the published privacy-policy, terms, and support URLs from the exact release build
 - complete user authentication, account export/deletion, and secure billing verification
 - enforce free-scan quotas server-side; the MVP uses short-lived device timestamps only
 - configure Play products, base plans, regional prices, and license testers
@@ -198,4 +252,4 @@ Play upload.
 - validate photo-provider retention and deletion terms
 - complete Play Data safety and Health apps declarations
 
-Known MVP limitations: follow-up prompts are review notes and do not alter nutrition totals; detected food names cannot yet be remapped; diary data stays on the device; manual food search is not implemented; no account is created; and privacy/legal links show a prelaunch notice until real URLs are supplied.
+Known MVP limitations: follow-up prompts are review notes and do not alter nutrition totals; detected food names cannot yet be remapped; diary data stays on the device; manual food search is not implemented; no account is created; and the production-photo policy/provider details are not finalized.

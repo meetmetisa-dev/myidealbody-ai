@@ -141,8 +141,9 @@ h3 {
 }
 
 :focus-visible {
-  outline: 3px solid #e28d4b;
+  outline: 3px solid #fffdf8;
   outline-offset: 4px;
+  box-shadow: 0 0 0 7px #a74124;
 }
 
 .site-header {

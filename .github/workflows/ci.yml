@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: "22"
       - run: python scripts/validate_website.py
+      - run: python -m unittest scripts.test_validate_play_release
       - run: node --check website/app.js
 
   backend:

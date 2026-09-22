@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Privacy policy for the current MyIdealBody AI website and Android development beta, in English and Bahasa Indonesia." />
+    <meta name="theme-color" content="#173b35" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="MyIdealBody AI — Privacy Policy" />
+    <meta property="og:description" content="How the current MyIdealBody AI development beta handles photos, nutrition entries, preferences, and service data." />
+    <title>Privacy Policy | MyIdealBody AI</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="legal.css" />
+  </head>
+  <body class="legal-page">
+    <a class="skip-link" href="#policy-content">Skip to the privacy policy</a>
+
+    <header class="legal-header">
+      <nav class="legal-nav" aria-label="Policy navigation">
+        <a class="brand" href="index.html" aria-label="MyIdealBody AI home">
+          <svg class="brand-mark" viewBox="0 0 44 44" aria-hidden="true">
+            <path d="M22 3.5c10.2 0 18.5 8.3 18.5 18.5S32.2 40.5 22 40.5 3.5 32.2 3.5 22 11.8 3.5 22 3.5Z" />
+            <path class="brand-leaf" d="M12.8 23.2c4.6-5.7 10.7-8.4 18.4-8.1-1.2 7.5-5.6 12.2-13.3 14.2" />
+            <path class="brand-stem" d="M13.5 31.2c4.1-6.1 9.1-10.2 15.1-12.4" />
+          </svg>
+          <span>MyIdealBody <strong>AI</strong></span>
+        </a>
+        <div class="legal-nav-links">
+          <a href="#english">English</a>
+          <a href="#bahasa">Bahasa Indonesia</a>
+          <a class="legal-home-link" href="index.html">Home</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="legal-main" id="policy-content">
+      <section class="legal-hero">
+        <p class="section-kicker">Current development beta · Beta pengembangan saat ini</p>
+        <h1>Privacy Policy<br />Kebijakan Privasi</h1>
+        <p>This bilingual notice describes the behavior that is actually implemented in the current public website and the Android beta’s safe default <strong>DEMO_MODE</strong>. It does not describe an unlaunched production photo-analysis service.</p>
+        <div class="legal-meta">
+          <span>Effective / Berlaku: 22 September 2026</span>
+          <span>Version 1.0</span>
+          <a href="https://github.com/meetmetisa-dev/myidealbody-ai">Public source</a>
+        </div>
+        <div class="legal-alert">
+          <span aria-hidden="true">!</span>
+          <div>
+            <strong>Production gate / Ketentuan sebelum produksi</strong>
+            <p>Before real meal photos are sent to any production model provider, this policy and the in-app disclosure must be updated to name the provider, processing purpose, location, retention period, subprocessors, security controls, and deletion route. Real-photo production upload must remain disabled until that review is complete.</p>
+          </div>
+        </div>
+        <div class="legal-language-nav" aria-label="Choose policy language">
+          <a href="#english">Read in English</a>
+          <a href="#bahasa">Baca dalam Bahasa Indonesia</a>
+        </div>
+      </section>
+
+      <article class="legal-document" id="english" lang="en">
+        <header class="legal-document-header">
+          <p class="section-kicker">English</p>
+          <h2>Privacy Policy</h2>
+          <p>For the MyIdealBody AI development beta maintained through the <strong>meetmetisa-dev</strong> GitHub repository.</p>
+        </header>
+
+        <div class="legal-content">
+          <section>
+            <h3>1. Scope and developer contact</h3>
+            <p>This policy covers the public MyIdealBody AI GitHub Pages website and the signed Google Play Internal or Closed testing build produced from this repository when it uses <strong>DEMO_MODE=true</strong>. The beta is intended for adults, does not create user accounts, and is not yet a paid public service.</p>
+            <p>For a privacy inquiry, use the contact route on the <a href="https://github.com/meetmetisa-dev">meetmetisa-dev GitHub profile</a>. For a security concern, follow the repository’s <a href="https://github.com/meetmetisa-dev/myidealbody-ai/security/policy">private security-reporting instructions</a>. Do not post meal photos, health information, identifiers, or vulnerability details in a public issue.</p>
+          </section>
+
+          <section>
+            <h3>2. Current beta behavior at a glance</h3>
+            <div class="legal-card good">
+              <ul>
+                <li>The public website has no production API configured. A selected photo is previewed locally in the browser and is not uploaded. Its guided nutrition range comes from the meal, portion, and oil/sauce options the user selects—not from image recognition.</li>
+                <li>The Android beta defaults to DEMO_MODE. The selected camera or gallery photo stays on the device, and the app generates its fixed sample result entirely on-device without making an analysis network request.</li>
+                <li>The fixed Android demo result does not consume the scan allowance and cannot be saved to the diary.</li>
+                <li>The beta contains no advertising SDK, behavioral analytics SDK, or crash-reporting SDK, and it does not use meal photos for model training.</li>
+                <li>Nutrition results are estimates for general wellness, not medical measurements or advice.</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h3>3. Data handled in the current beta</h3>
+            <div class="legal-table-wrap">
+              <table class="legal-table">
+                <caption class="visually-hidden">Data handled by the current MyIdealBody AI website and Android development beta</caption>
+                <thead><tr><th scope="col">Context</th><th scope="col">Data</th><th scope="col">Current use and destination</th></tr></thead>
+                <tbody>
+                  <tr><td>Public website</td><td>Language preference</td><td>Stored in browser local storage so the site can reopen in English or Bahasa Indonesia. It is not sent by the website code.</td></tr>
+                  <tr><td>Public website</td><td>Selected food photo</td><td>Decoded only for a local preview. With the public site’s API setting left blank, the photo does not leave the browser.</td></tr>
+                  <tr><td>Public website</td><td>Meal type, portion, and oil/sauce choice</td><td>Used in browser memory to calculate the clearly labeled guided range. The site does not save or transmit these choices.</td></tr>
+                  <tr><td>Android DEMO_MODE</td><td>Selected camera/gallery photo</td><td>Displayed on the device for the result flow. The photo is not transmitted for analysis; the fixed sample result is generated entirely inside the app.</td></tr>
+                  <tr><td>Android DEMO_MODE</td><td>Fixed sample result</td><td>Bundled sample foods and nutrition ranges are displayed locally. The mock result does not consume the scan allowance and its diary-save control is disabled.</td></tr>
+                  <tr><td>Android local storage</td><td>Language, onboarding state, photo-analysis consent setting, calorie/protein goals, any non-demo diary entries, and recent successful non-demo scan times</td><td>Stored in app preferences on the device to operate supported app flows. A saved non-demo diary entry can contain a meal label, foods, estimated nutrients, confidence, and a timestamp; the save flow does not store a meal-photo copy. The current fixed demo result is not written to the diary or scan history.</td></tr>
+                  <tr><td>Android DEMO_MODE</td><td>Google Play Billing</td><td>Billing initialization, product queries, checkout, restore, and entitlement verification are disabled in the local demo.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Like other internet services, GitHub Pages, Google Play, and network providers may process ordinary technical data such as IP address, request time, user agent, device/service identifiers, and security logs under their own terms. The Android demo analysis itself makes no network request. GitHub hosts this static website; see the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a>. Google Play services are governed by <a href="https://policies.google.com/privacy">Google’s Privacy Policy</a>.</p>
+          </section>
+
+          <section>
+            <h3>4. Permissions and data not requested</h3>
+            <ul>
+              <li><strong>Camera:</strong> used only when the user chooses camera capture. Live camera frames are sampled on-device for a simple brightness cue; audio is disabled.</li>
+              <li><strong>Internet:</strong> present for optional external policy/support links and a separately configured non-demo analysis service. The default Android demo neither requests analysis nor initializes Play Billing.</li>
+              <li><strong>Gallery:</strong> the Android system picker is used. The app does not request broad storage access or alter gallery originals. Android or the selected media provider may supply an app-readable temporary copy for the result flow.</li>
+            </ul>
+            <p>The current beta does not request precise location, contacts, microphone access, advertising ID, or broad photo-library/storage permission. It has no sign-in flow and therefore does not intentionally collect a name, email address, or account password.</p>
+          </section>
+
+          <section>
+            <h3>5. Purpose, sharing, and training</h3>
+            <p>Local preferences and any non-demo diary data are used only to provide language selection, goals, daily limits, reviewable meal history, and settings. The bundled fixed result supports local testing of the scan/result flow and is not saved. The local demo does not initialize billing.</p>
+            <p>We do not sell or rent beta user data, serve behavioral advertising, or use selected meal photos to train models. Under the current defaults, no selected meal photo or demo-analysis request is shared with an analysis API. A future model provider is <strong>not</strong> authorized by this policy.</p>
+          </section>
+
+          <section>
+            <h3>6. Retention and deletion</h3>
+            <ul>
+              <li>A website photo preview remains in browser memory until it is removed, replaced, or the page is closed. Guided inputs/results are not persisted by the website.</li>
+              <li>The website language preference remains in local storage until browser site data is cleared.</li>
+              <li>Android camera captures are temporary app files and are deleted after the result flow where the app can do so; Android may also evict cache files. A gallery picker or media provider may create an app-readable temporary copy that remains on-device until Android or the provider clears it, app data is cleared, or the app is uninstalled. The app does not intentionally copy a gallery image into the diary, and gallery originals are not changed or deleted.</li>
+              <li>Any non-demo Android diary entries remain on the device until the user uses <strong>Clear history</strong>, clears app data, or uninstalls. Calorie and protein goals remain until changed, app data is cleared, or the app is uninstalled. Recent successful non-demo scan timestamps are pruned to approximately two days. The fixed demo result is not added to the diary or scan history. Language, onboarding, and consent choices remain until changed or app data is cleared.</li>
+            </ul>
+            <p>In the Android app, use <strong>Settings → Clear history</strong> to delete local diary entries. Use Android system settings to clear all app data. In a browser, clear site data for the GitHub Pages origin to remove the language preference.</p>
+          </section>
+
+          <section>
+            <h3>7. Security and international processing</h3>
+            <p>The release configuration blocks cleartext network traffic, Android backups are disabled, the Android demo analysis stays on-device, and the public website does not contain provider secrets. The optional backend validates upload size and type when separately configured. These controls reduce risk, but no development beta or network service can be guaranteed completely secure.</p>
+            <p>GitHub or Google may process technical data in countries other than the user’s. Because a production model provider and hosting region have not been selected, real-photo cross-border processing is not enabled or covered by this notice.</p>
+          </section>
+
+          <section>
+            <h3>8. Required update before real photo analysis</h3>
+            <div class="legal-card warning">
+              <p>The code contains an optional path that can send a photo to a separately configured HTTPS API. This path is not enabled on the current public website, and the Android default performs its fixed demo entirely on-device with no analysis request. Before enabling real-photo upload, the operator must update this policy and consent screen, identify every provider and subprocessor, verify data location and retention, define deletion and inquiry procedures, complete Google Play Data safety and Health Apps declarations, and obtain any required legal review.</p>
+            </div>
+          </section>
+
+          <section>
+            <h3>9. Changes to this policy</h3>
+            <p>Material changes will be posted on this page with a revised effective date. A change in this document alone does not enable production upload; the application configuration, in-app disclosure, and store declarations must also be updated consistently.</p>
+          </section>
+        </div>
+      </article>
+
+      <article class="legal-document" id="bahasa" lang="id">
+        <header class="legal-document-header">
+          <p class="section-kicker">Bahasa Indonesia</p>
+          <h2>Kebijakan Privasi</h2>
+          <p>Untuk beta pengembangan MyIdealBody AI yang dikelola melalui repositori GitHub <strong>meetmetisa-dev</strong>.</p>
+        </header>
+
+        <div class="legal-content">
+          <section>
+            <h3>1. Cakupan dan kontak pengembang</h3>
+            <p>Kebijakan ini berlaku untuk situs publik MyIdealBody AI di GitHub Pages dan build pengujian Internal atau Tertutup Google Play yang ditandatangani dari repositori ini saat menggunakan <strong>DEMO_MODE=true</strong>. Beta ditujukan bagi pengguna dewasa, belum membuat akun pengguna, dan belum menjadi layanan publik berbayar.</p>
+            <p>Untuk pertanyaan privasi, gunakan jalur kontak pada <a href="https://github.com/meetmetisa-dev">profil GitHub meetmetisa-dev</a>. Untuk masalah keamanan, ikuti <a href="https://github.com/meetmetisa-dev/myidealbody-ai/security/policy">petunjuk pelaporan keamanan privat</a> repositori. Jangan menuliskan foto makanan, informasi kesehatan, identitas, atau rincian kerentanan pada issue publik.</p>
+          </section>
+
+          <section>
+            <h3>2. Ringkasan perilaku beta saat ini</h3>
+            <div class="legal-card good">
+              <ul>
+                <li>Situs publik belum dikonfigurasi dengan API produksi. Foto yang dipilih hanya dipratinjau secara lokal di browser dan tidak diunggah. Rentang gizi terpandu berasal dari pilihan jenis makanan, porsi, dan minyak/saus—bukan dari pengenalan gambar.</li>
+                <li>Beta Android memakai DEMO_MODE secara bawaan. Foto kamera atau galeri tetap berada di perangkat, dan aplikasi menghasilkan contoh hasil tetap sepenuhnya di perangkat tanpa permintaan jaringan untuk analisis.</li>
+                <li>Hasil demo Android tetap tidak mengurangi batas pemindaian dan tidak dapat disimpan ke catatan makanan.</li>
+                <li>Beta tidak memuat SDK iklan, analitik perilaku, atau pelaporan crash, serta tidak menggunakan foto makanan untuk melatih model.</li>
+                <li>Hasil gizi adalah estimasi untuk kebugaran umum, bukan pengukuran atau saran medis.</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h3>3. Data yang ditangani dalam beta saat ini</h3>
+            <div class="legal-table-wrap">
+              <table class="legal-table">
+                <caption class="visually-hidden">Data yang ditangani oleh situs dan beta pengembangan Android MyIdealBody AI saat ini</caption>
+                <thead><tr><th scope="col">Konteks</th><th scope="col">Data</th><th scope="col">Penggunaan dan tujuan saat ini</th></tr></thead>
+                <tbody>
+                  <tr><td>Situs publik</td><td>Preferensi bahasa</td><td>Disimpan pada penyimpanan lokal browser agar situs dapat dibuka kembali dalam English atau Bahasa Indonesia. Kode situs tidak mengirimkannya.</td></tr>
+                  <tr><td>Situs publik</td><td>Foto makanan yang dipilih</td><td>Didekode hanya untuk pratinjau lokal. Karena pengaturan API situs publik dibiarkan kosong, foto tidak keluar dari browser.</td></tr>
+                  <tr><td>Situs publik</td><td>Jenis makanan, porsi, dan pilihan minyak/saus</td><td>Digunakan dalam memori browser untuk menghitung rentang terpandu yang diberi label dengan jelas. Situs tidak menyimpan atau mengirim pilihan ini.</td></tr>
+                  <tr><td>Android DEMO_MODE</td><td>Foto kamera/galeri yang dipilih</td><td>Ditampilkan pada perangkat selama alur hasil. Foto tidak dikirim untuk analisis; contoh hasil tetap dibuat sepenuhnya di dalam aplikasi.</td></tr>
+                  <tr><td>Android DEMO_MODE</td><td>Contoh hasil tetap</td><td>Contoh makanan dan rentang gizi bawaan ditampilkan secara lokal. Hasil mock tidak mengurangi batas pemindaian dan kontrol simpan ke catatan makanan dinonaktifkan.</td></tr>
+                  <tr><td>Penyimpanan lokal Android</td><td>Bahasa, status onboarding, pengaturan persetujuan analisis, target kalori/protein, catatan makanan non-demo jika ada, dan waktu pemindaian non-demo berhasil terakhir</td><td>Disimpan pada preferensi aplikasi di perangkat untuk menjalankan alur yang didukung. Catatan non-demo yang disimpan dapat memuat label makanan, jenis makanan, estimasi gizi, keyakinan, dan waktu; alur simpan tidak menyimpan salinan foto. Hasil demo tetap saat ini tidak ditulis ke catatan makanan atau riwayat pemindaian.</td></tr>
+                  <tr><td>Android DEMO_MODE</td><td>Google Play Billing</td><td>Inisialisasi billing, permintaan produk, checkout, pemulihan, dan verifikasi hak akses dinonaktifkan dalam demo lokal.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Seperti layanan internet lain, GitHub Pages, Google Play, dan penyedia jaringan dapat memproses data teknis umum seperti alamat IP, waktu permintaan, user agent, pengenal perangkat/layanan, dan log keamanan berdasarkan ketentuan masing-masing. Analisis demo Android itu sendiri tidak membuat permintaan jaringan. GitHub meng-host situs statis ini; lihat <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">Pernyataan Privasi GitHub</a>. Layanan Google Play tunduk pada <a href="https://policies.google.com/privacy?hl=id">Kebijakan Privasi Google</a>.</p>
+          </section>
+
+          <section>
+            <h3>4. Izin dan data yang tidak diminta</h3>
+            <ul>
+              <li><strong>Kamera:</strong> digunakan hanya saat pengguna memilih pengambilan melalui kamera. Bingkai kamera langsung hanya disampel di perangkat untuk petunjuk sederhana mengenai pencahayaan; audio dinonaktifkan.</li>
+              <li><strong>Internet:</strong> tersedia untuk tautan kebijakan/bantuan eksternal opsional dan layanan analisis non-demo yang dikonfigurasi terpisah. Demo Android bawaan tidak meminta analisis dan tidak menginisialisasi Play Billing.</li>
+              <li><strong>Galeri:</strong> menggunakan pemilih sistem Android. Aplikasi tidak meminta akses penyimpanan luas dan tidak mengubah foto asli di galeri.</li>
+            </ul>
+            <p>Beta saat ini tidak meminta lokasi presisi, kontak, akses mikrofon, advertising ID, atau izin luas untuk pustaka foto/penyimpanan. Belum ada proses masuk akun sehingga aplikasi tidak sengaja mengumpulkan nama, alamat email, atau kata sandi akun.</p>
+          </section>
+
+          <section>
+            <h3>5. Tujuan, pembagian data, dan pelatihan model</h3>
+            <p>Preferensi lokal dan catatan makanan non-demo jika ada hanya digunakan untuk pilihan bahasa, target, batas harian, riwayat makanan yang dapat diperiksa, dan pengaturan. Hasil tetap bawaan mendukung pengujian lokal alur pemindaian/hasil dan tidak disimpan. Demo lokal tidak menginisialisasi billing.</p>
+            <p>Kami tidak menjual atau menyewakan data pengguna beta, menampilkan iklan perilaku, atau memakai foto makanan yang dipilih untuk melatih model. Dengan pengaturan bawaan saat ini, tidak ada foto makanan pilihan atau permintaan analisis demo yang dibagikan dengan API analisis. Kebijakan ini <strong>tidak</strong> memberikan izin kepada penyedia model di masa depan.</p>
+          </section>
+
+          <section>
+            <h3>6. Penyimpanan dan penghapusan</h3>
+            <ul>
+              <li>Pratinjau foto situs tetap berada dalam memori browser sampai dihapus, diganti, atau halaman ditutup. Pilihan dan hasil terpandu tidak disimpan oleh situs.</li>
+              <li>Preferensi bahasa situs tetap berada dalam penyimpanan lokal sampai data situs pada browser dihapus.</li>
+              <li>Foto kamera Android merupakan berkas sementara aplikasi dan dihapus setelah alur hasil jika dapat dilakukan aplikasi; Android juga dapat membersihkan cache. Foto asli dari galeri tidak diubah atau dihapus.</li>
+              <li>Catatan makanan non-demo jika ada tetap di perangkat sampai pengguna memilih <strong>Hapus riwayat</strong>, menghapus data aplikasi, atau mencopot aplikasi. Target kalori dan protein tetap tersimpan sampai diubah, data aplikasi dihapus, atau aplikasi dicopot. Waktu pemindaian non-demo berhasil terakhir dipangkas menjadi sekitar dua hari. Hasil demo tetap tidak ditambahkan ke catatan makanan atau riwayat pemindaian. Pilihan bahasa, onboarding, dan persetujuan tetap disimpan sampai diubah atau data aplikasi dihapus.</li>
+            </ul>
+            <p>Di aplikasi Android, gunakan <strong>Pengaturan → Hapus riwayat</strong> untuk menghapus catatan makanan lokal. Gunakan pengaturan sistem Android untuk menghapus seluruh data aplikasi. Di browser, hapus data situs untuk origin GitHub Pages guna menghapus preferensi bahasa.</p>
+          </section>
+
+          <section>
+            <h3>7. Keamanan dan pemrosesan lintas negara</h3>
+            <p>Konfigurasi rilis menolak jaringan tanpa enkripsi, pencadangan Android dinonaktifkan, analisis demo Android tetap di perangkat, dan situs publik tidak memuat rahasia penyedia. Backend opsional memeriksa tipe dan ukuran unggahan jika dikonfigurasi terpisah. Kontrol ini mengurangi risiko, tetapi tidak ada beta pengembangan atau layanan jaringan yang dapat dijamin sepenuhnya aman.</p>
+            <p>GitHub atau Google dapat memproses data teknis di negara selain negara pengguna. Karena penyedia model dan wilayah hosting produksi belum dipilih, pemrosesan lintas negara untuk foto nyata belum diaktifkan dan belum dicakup oleh pemberitahuan ini.</p>
+          </section>
+
+          <section>
+            <h3>8. Pembaruan wajib sebelum analisis foto nyata</h3>
+            <div class="legal-card warning">
+              <p>Kode memuat jalur opsional yang dapat mengirim foto ke API HTTPS yang dikonfigurasi terpisah. Jalur ini tidak aktif pada situs publik saat ini, sedangkan pengaturan bawaan Android menjalankan demo tetap sepenuhnya di perangkat tanpa permintaan analisis. Sebelum unggahan foto nyata diaktifkan, operator wajib memperbarui kebijakan dan layar persetujuan, menyebutkan semua penyedia dan subprosesor, memverifikasi lokasi dan masa penyimpanan data, menetapkan prosedur penghapusan dan pertanyaan privasi, melengkapi deklarasi Data safety dan Health Apps Google Play, serta memperoleh tinjauan hukum yang diperlukan.</p>
+            </div>
+          </section>
+
+          <section>
+            <h3>9. Perubahan kebijakan</h3>
+            <p>Perubahan penting akan ditampilkan pada halaman ini dengan tanggal berlaku yang diperbarui. Perubahan dokumen saja tidak mengaktifkan unggahan produksi; konfigurasi aplikasi, pemberitahuan dalam aplikasi, dan deklarasi toko juga harus diperbarui secara konsisten.</p>
+          </section>
+        </div>
+      </article>
+    </main>
+
+    <footer class="legal-footer">
+      <div class="legal-footer-inner">
+        <span>© 2026 MyIdealBody AI · Development beta</span>
+        <div class="legal-footer-links">
+          <a href="index.html">Home</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="support.html">Support</a>
+          <a href="https://github.com/meetmetisa-dev/myidealbody-ai">Source</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

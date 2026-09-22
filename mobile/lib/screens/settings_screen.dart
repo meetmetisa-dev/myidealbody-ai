@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../core/app_config.dart';
 import '../l10n/l10n.dart';
 import '../state/app_scope.dart';
 import 'paywall_screen.dart';
@@ -58,16 +60,20 @@ class SettingsScreen extends StatelessWidget {
                   secondary: const Icon(Icons.cloud_upload_outlined),
                   title: Text(l10n.cloudAnalysis),
                   subtitle: Text(l10n.cloudAnalysisDescription),
-                  value: controller.cloudAnalysisConsent,
-                  onChanged: controller.setCloudConsent,
+                  value: !controller.api.isDemoMode && controller.cloudAnalysisConsent,
+                  onChanged:
+                      controller.api.isDemoMode ? null : controller.setCloudConsent,
                 ),
                 const Divider(height: 1, indent: 18, endIndent: 18),
                 ListTile(
                   leading: const Icon(Icons.policy_outlined),
                   title: Text(l10n.privacyPolicy),
                   subtitle: Text(l10n.photoRetentionMvp),
-                  trailing: const Icon(Icons.info_outline_rounded),
-                  onTap: () => _showPrelaunchNotice(context),
+                  trailing: const Icon(Icons.open_in_new_rounded, size: 19),
+                  onTap: () => _openExternalPage(
+                    context,
+                    AppConfig.privacyPolicyUrl,
+                  ),
                 ),
                 const Divider(height: 1, indent: 18, endIndent: 18),
                 ListTile(
@@ -105,20 +111,26 @@ class SettingsScreen extends StatelessWidget {
                   leading: const Icon(Icons.description_outlined),
                   title: Text(l10n.termsOfUse),
                   trailing: const Icon(Icons.open_in_new_rounded, size: 19),
-                  onTap: () => _showPrelaunchNotice(context),
+                  onTap: () => _openExternalPage(
+                    context,
+                    AppConfig.termsOfUseUrl,
+                  ),
                 ),
                 const Divider(height: 1, indent: 18, endIndent: 18),
                 ListTile(
                   leading: const Icon(Icons.support_agent_rounded),
                   title: Text(l10n.support),
                   trailing: const Icon(Icons.open_in_new_rounded, size: 19),
-                  onTap: () => _showPrelaunchNotice(context),
+                  onTap: () => _openExternalPage(
+                    context,
+                    AppConfig.supportUrl,
+                  ),
                 ),
                 const Divider(height: 1, indent: 18, endIndent: 18),
                 ListTile(
                   leading: const Icon(Icons.info_outline_rounded),
                   title: Text(l10n.appName),
-                  subtitle: Text(l10n.versionLabel),
+                  subtitle: Text('${l10n.versionLabel} ${AppConfig.appVersion}'),
                 ),
               ],
             ),
@@ -240,10 +252,21 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void _showPrelaunchNotice(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(context.l10n.comingBeforeLaunch)),
-    );
+  Future<void> _openExternalPage(BuildContext context, String rawUrl) async {
+    var opened = false;
+    try {
+      opened = await launchUrl(
+        Uri.parse(rawUrl),
+        mode: LaunchMode.externalApplication,
+      );
+    } on Exception {
+      opened = false;
+    }
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.linkOpenFailed)),
+      );
+    }
   }
 }
 

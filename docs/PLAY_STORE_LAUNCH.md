@@ -6,8 +6,9 @@ Status: 19 September 2026. Google Play policy changes frequently; recheck Policy
 
 ### 1. Build and signing
 
-- [ ] Use the final package name; changing it later creates a different Play app.
+- [x] Permanent package/application ID confirmed and CI-locked as `com.myidealbody.ai`; do not change it after the first Play registration or upload.
 - [ ] Build an Android App Bundle (`.aab`), enroll in Play App Signing, and keep the upload key backed up.
+- [ ] Configure the protected `play-release` GitHub environment and signing secrets, then run **Build signed Play AAB** from `main`. The source ZIP is not accepted by Play.
 - [ ] Set `targetSdk` to **36 or higher**. Since 31 August 2026, new mobile apps and updates must target Android 16 / API 36. Do not plan around the temporary extension. See [Google Play's target API requirements](https://support.google.com/googleplay/android-developer/answer/11926878?hl=en).
 - [ ] Increment `versionCode` for every upload and use a human-readable `versionName`.
 - [ ] Request only permissions used by the shipped build. The MVP should need camera and network access; use Android Photo Picker instead of broad storage access.
@@ -16,6 +17,7 @@ Status: 19 September 2026. Google Play policy changes frequently; recheck Policy
 ### 2. Test track
 
 - [ ] Start with internal testing, then a closed test.
+- [ ] For the default `local_demo` AAB, use only Internal or Closed Testing and the exact confirmation `LOCAL_DEMO_INTERNAL_OR_CLOSED_TEST`; do not describe or submit it as production photo recognition.
 - [ ] If the Play Console account is a **personal account created after 13 November 2023**, keep at least **12 testers opted in continuously for 14 days**, then apply for production access. This rule is account-specific, not universal. Keep feedback and a record of changes for the application. See [Google Play's testing requirements](https://support.google.com/googleplay/android-developer/answer/14151465?hl=en-EN).
 - [ ] Give reviewers working credentials or a no-login review path under App access.
 - [ ] Run the Play pre-launch report and fix crashes, ANRs, accessibility blockers, and broken links.
@@ -65,3 +67,10 @@ Status: 19 September 2026. Google Play policy changes frequently; recheck Policy
 ## Launch blockers
 
 Do not submit until production API credentials, a public privacy-policy URL, a public deletion URL, server-side purchase verification, nutrition-data usage rights, and an incident/support contact are in place. This checklist is operational guidance, not legal advice.
+
+The current manual workflow can safely produce a signed, fully local fixed-result
+demo for Internal or Closed Testing after the upload-key secrets are configured.
+A successful AAB build is not authorization for a public production rollout.
+The `production_photo` mode remains blocked on client-side image re-encoding/EXIF
+removal, a final provider/hosting/privacy review, live-policy verification,
+licensed nutrition data, authenticated billing/quota controls, and device tests.

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">MyIdealBody AI app icon source</title>
+  <desc id="desc">A full-bleed forest green square with the MyIdealBody leaf mark in lime and coral.</desc>
+  <rect width="512" height="512" fill="#173b35" />
+  <circle cx="256" cy="256" r="178" fill="#23584e" />
+  <path d="M132 261c73-93 164-129 273-109-24 111-96 180-217 207" fill="none" stroke="#a8c968" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M143 386c62-102 141-171 238-207" fill="none" stroke="#ee7b4f" stroke-width="29" stroke-linecap="round" />
+  <circle cx="373" cy="180" r="14" fill="#fffdf8" />
+</svg>
