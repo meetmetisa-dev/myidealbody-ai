@@ -83,7 +83,7 @@ class FoodEstimate {
 
   FoodEstimate copyWith({String? name, double? quantity}) {
     final nextQuantity = quantity ?? this.quantity;
-    final factor = this.quantity <= 0 ? 1 : nextQuantity / this.quantity;
+    final factor = this.quantity <= 0 ? 1.0 : nextQuantity / this.quantity;
     return FoodEstimate(
       id: id,
       name: name ?? this.name,
@@ -272,4 +272,3 @@ Map<String, dynamic>? _map(dynamic value) {
 }
 
 List<dynamic> _list(dynamic value) => value is List ? value : const [];
-

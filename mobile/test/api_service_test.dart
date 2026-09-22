@@ -38,7 +38,11 @@ void main() {
       );
     });
 
-    final service = ApiService(client: client, baseUrl: 'https://example.test');
+    final service = ApiService(
+      client: client,
+      baseUrl: 'https://example.test',
+      demoMode: false,
+    );
     final result = await service.analyzeMeal(
       imagePath: image.path,
       locale: 'en',
@@ -53,7 +57,10 @@ void main() {
     final image = File('${directory.path}/meal.txt');
     await image.writeAsString('not an image');
 
-    final service = ApiService(baseUrl: 'https://example.test');
+    final service = ApiService(
+      baseUrl: 'https://example.test',
+      demoMode: false,
+    );
     expect(
       () => service.analyzeMeal(
         imagePath: image.path,
@@ -64,4 +71,3 @@ void main() {
     );
   });
 }
-

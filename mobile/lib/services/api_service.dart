@@ -22,16 +22,19 @@ class ApiService {
     http.Client? client,
     String? baseUrl,
     Future<String?> Function()? authTokenProvider,
+    bool? demoMode,
   })
       : _client = client ?? http.Client(),
         _baseUrl = (baseUrl ?? AppConfig.apiBaseUrl).replaceAll(RegExp(r'/$'), ''),
         _authTokenProvider = authTokenProvider ?? _noAuthToken,
-        _authProviderConfigured = authTokenProvider != null;
+        _authProviderConfigured = authTokenProvider != null,
+        _demoMode = demoMode ?? AppConfig.demoMode;
 
   final http.Client _client;
   final String _baseUrl;
   final Future<String?> Function() _authTokenProvider;
   final bool _authProviderConfigured;
+  final bool _demoMode;
 
   static Future<String?> _noAuthToken() async => null;
 
@@ -47,7 +50,7 @@ class ApiService {
     required String source,
   }) async {
     late final http.MultipartFile imagePart;
-    if (AppConfig.demoMode) {
+    if (_demoMode) {
       imagePart = http.MultipartFile.fromBytes(
         'image',
         base64Decode(_demoPlaceholderPng),

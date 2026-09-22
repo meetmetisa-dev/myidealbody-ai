@@ -28,8 +28,6 @@ jobs:
 
   mobile:
     runs-on: ubuntu-latest
-    outputs:
-      analyzer_diagnostic: ${{ steps.analyze.outputs.diagnostic }}
     defaults:
       run:
         working-directory: mobile
@@ -45,29 +43,6 @@ jobs:
       # Normalize formatting in the isolated runner before analysis and tests.
       # Contributors can run the stricter local check documented in README.md.
       - run: dart format lib test
-      - name: Analyze and expose first diagnostic
-        id: analyze
-        continue-on-error: true
-        shell: bash
-        run: |
-          set +e
-          flutter analyze --no-fatal-infos --no-fatal-warnings 2>&1 | tee /tmp/flutter-analyze.log
-          status=${PIPESTATUS[0]}
-          diagnostic=$(grep -m1 -E '(^|[[:space:]])error •' /tmp/flutter-analyze.log || true)
-          if [ -z "$diagnostic" ]; then
-            diagnostic=$(tail -n 3 /tmp/flutter-analyze.log | head -n 1)
-          fi
-          diagnostic=${diagnostic//$'\r'/ }
-          diagnostic=${diagnostic//$'\n'/ }
-          printf 'diagnostic=%s\n' "${diagnostic:0:220}" >> "$GITHUB_OUTPUT"
-          exit "$status"
+      - run: flutter analyze --no-fatal-infos --no-fatal-warnings
       - run: flutter test
       - run: flutter build apk --debug --dart-define=API_BASE_URL=https://example.invalid
-
-  analyzer-diagnostic:
-    if: ${{ always() && needs.mobile.outputs.analyzer_diagnostic != '' }}
-    needs: mobile
-    name: ${{ needs.mobile.outputs.analyzer_diagnostic }}
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Analyzer diagnostic exposed in this job name."
