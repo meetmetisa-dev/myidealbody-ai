@@ -28,6 +28,8 @@ jobs:
 
   mobile:
     runs-on: ubuntu-latest
+    outputs:
+      test_diagnostic: ${{ steps.test.outputs.diagnostic }}
     defaults:
       run:
         working-directory: mobile
@@ -44,5 +46,39 @@ jobs:
       # Contributors can run the stricter local check documented in README.md.
       - run: dart format lib test
       - run: flutter analyze --no-fatal-infos --no-fatal-warnings
-      - run: flutter test
+      - name: Test and expose first failure
+        id: test
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          flutter test --machine 2>&1 | tee /tmp/flutter-test.log
+          status=${PIPESTATUS[0]}
+          diagnostic=$(python3 - <<'PY'
+          import json
+
+          with open('/tmp/flutter-test.log', encoding='utf-8') as lines:
+              for line in lines:
+                  try:
+                      event = json.loads(line)
+                  except json.JSONDecodeError:
+                      continue
+                  if event.get('type') == 'error':
+                      print(' '.join(event.get('error', '').split())[:220])
+                      break
+          PY
+          )
+          if [ -z "$diagnostic" ]; then
+            diagnostic=$(tail -n 3 /tmp/flutter-test.log | tr '\n' ' ')
+          fi
+          printf 'diagnostic=%s\n' "$diagnostic" >> "$GITHUB_OUTPUT"
+          exit "$status"
       - run: flutter build apk --debug --dart-define=API_BASE_URL=https://example.invalid
+
+  test-diagnostic:
+    if: ${{ always() && needs.mobile.outputs.test_diagnostic != '' }}
+    needs: mobile
+    name: ${{ needs.mobile.outputs.test_diagnostic }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Test diagnostic exposed in this job name."
