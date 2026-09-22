@@ -1,0 +1,148 @@
+# MyIdealBody AI — Android Flutter client
+
+An Android-first MVP for estimating calories and protein from a meal photo. The app ships with English and Bahasa Indonesia, heuristic ranges, reviewable foods, editable portions, a local diary, camera/gallery input, and Google Play subscription plumbing.
+
+This client is deliberately honest about what computer vision can and cannot see. Camera guidance checks only light and framing; nutrition is estimated after a still image is uploaded. Results default to ranges and must be reviewed before saving.
+
+## What works
+
+- English and Bahasa Indonesia via Flutter `gen-l10n` and ARB files
+- privacy-first onboarding and a persistent language choice
+- Material 3 home dashboard with calorie/protein goals
+- camera capture, gallery picker, plate guide, and sampled brightness guidance
+- safe default demo mode that sends a generated placeholder—not the selected photo—to `POST /v1/analyze`
+- production-mode multipart upload with explicit JPEG/PNG/WebP MIME detection
+- calorie, protein, carbohydrate, and fat ranges plus confidence
+- editable portions with recalculated totals; food renaming stays locked until catalog remapping exists
+- visible hidden-ingredient caveats and review-only follow-up prompts
+- on-device diary/history and destructive-data confirmation
+- free limit of three successful analyses per day
+- subscription product discovery using prices returned by Google Play
+- settings for language, goals, cloud consent, local deletion, and disclosures
+- cached camera photos deleted after the result flow; gallery originals are never changed
+
+## Requirements
+
+- Flutter 3.47.5 stable (Dart 3.13.4) or a compatible newer stable version
+- Android SDK 36
+- JDK 17
+- a running MyIdealBody API (the sibling `backend` project)
+
+The Android host uses AGP 8.13.2, Gradle 8.13, Kotlin 2.3.21, `minSdk 24`, and `targetSdk 36`.
+
+## Run locally
+
+```bash
+flutter pub get
+flutter gen-l10n
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000 --dart-define=DEMO_MODE=true
+```
+
+`10.0.2.2` reaches the host machine from the Android emulator. Debug builds allow cleartext HTTP only for `10.0.2.2` and `localhost`; the release manifest refuses cleartext traffic. Use an HTTPS API URL for physical-device and production builds.
+
+`DEMO_MODE` defaults to `true`: the app keeps the selected image on-device and sends a neutral generated placeholder to the fixed-result backend. Set `--dart-define=DEMO_MODE=false` only for a reviewed build connected to a real recognition provider with final privacy disclosures.
+
+The included Linux/macOS `android/gradlew` bootstraps Gradle 8.13 when a system Gradle is unavailable. For a standard Gradle wrapper JAR or on Windows, back up the custom Android files and run:
+
+```bash
+flutter create . --platforms=android --org com.myidealbody
+```
+
+Then reapply `compileSdk/targetSdk 36`, `minSdk 24`, the manifest permissions, and `MainActivity.kt` method channel from this repository.
+
+## API contract
+
+The client sends a multipart request:
+
+- `image`: JPEG, PNG, or WebP
+- `locale`: `en` or `id`
+- `source`: `camera` or `gallery`
+
+Expected response shape:
+
+```json
+{
+  "analysis_id": "…",
+  "total": {
+    "calories": {"min": 400, "max": 560, "estimated": 480},
+    "protein_g": {"min": 22, "max": 34, "estimated": 28},
+    "carbs_g": {"min": 45, "max": 70, "estimated": 58},
+    "fat_g": {"min": 12, "max": 24, "estimated": 18}
+  },
+  "confidence": 0.72,
+  "foods": [],
+  "caveats": [],
+  "follow_up_questions": [],
+  "provider": "mock"
+}
+```
+
+The backend currently provides a deterministic mock recognizer by default. A production vision provider and a validated/licensed Indonesian nutrition catalog are still required before health claims or a public launch.
+
+## Pricing and Google Play Billing
+
+Product IDs are fixed in `lib/core/app_config.dart`:
+
+- `myidealbody_pro_monthly`
+- `myidealbody_pro_annual`
+
+Recommended launch configuration in Play Console:
+
+| Plan | Indonesia | Other markets starting point |
+|---|---:|---:|
+| Monthly | Rp49.000/month | about US$4.99/month |
+| Annual launch | Rp299.000/year | about US$19.99/year |
+
+These are product-strategy inputs, not hardcoded checkout prices. The real paywall uses `ProductDetails.price`, allowing Play to show the buyer’s currency, taxes, and regional pricing. Preview copy is clearly labeled and the subscribe button stays disabled when Play products or secure verification are unavailable.
+
+### Required billing integration before enabling purchase
+
+Purchases fail closed by design. The default `ApiService` has no auth provider, so `SubscriptionService.verificationReady` remains false and no real Play purchase can start.
+
+Pro access is not trusted from local preferences. On a configured build, the app restores Play purchases at startup and grants access only after the backend returns an active entitlement.
+
+After implementing user accounts, inject a short-lived user access token:
+
+```dart
+final api = ApiService(
+  authTokenProvider: () async => authSession.currentAccessToken,
+);
+final controller = await AppController.load(api: api);
+```
+
+The backend billing endpoint must accept and authorize that user session, bind the purchase to the user, and return `entitlement_active`. Never embed the backend’s internal billing bearer token, a service-account key, or any production secret in the APK. Also add Play real-time developer notifications, idempotent entitlement updates, acknowledgement handling, and restore testing before release.
+
+## Localization
+
+Source translations live in:
+
+- `lib/l10n/app_en.arb`
+- `lib/l10n/app_id.arb`
+
+To add a language, copy the English ARB to `app_<locale>.arb`, translate every message while preserving ICU placeholders, run `flutter gen-l10n`, and add localized store listing text in Play Console. Dates and numbers already use the active locale.
+
+## Verification
+
+```bash
+dart format --output=none --set-exit-if-changed lib test
+flutter analyze
+flutter test
+flutter build apk --debug --dart-define=API_BASE_URL=https://example.invalid
+```
+
+CI runs those checks on Flutter 3.47.5. This workspace did not have Flutter or Dart installed, so the generated localization files, package lockfile, analyzer results, tests, and APK must be produced by CI or a Flutter workstation.
+
+## Before Play Store release
+
+- replace the mock recognizer and benchmark it on labeled Indonesian meals
+- obtain lawful nutrition data and document provenance (especially TKPI use)
+- add production privacy-policy, terms, and support URLs
+- complete user authentication, account export/deletion, and secure billing verification
+- enforce free-scan quotas server-side; the MVP uses short-lived device timestamps only
+- configure Play products, base plans, regional prices, and license testers
+- configure an upload keystore; do not use debug signing for production
+- run camera, denial, low-light, gallery, offline, large-text, and TalkBack tests on real devices
+- validate photo-provider retention and deletion terms
+- complete Play Data safety and Health apps declarations
+
+Known MVP limitations: follow-up prompts are review notes and do not alter nutrition totals; detected food names cannot yet be remapped; diary data stays on the device; manual food search is not implemented; no account is created; and privacy/legal links show a prelaunch notice until real URLs are supplied.

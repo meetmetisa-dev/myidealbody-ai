@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="MyIdealBody AI helps you estimate calorie and protein ranges from a meal photo, with editable results designed for everyday Indonesian food."
+      id="meta-description"
+    />
+    <meta name="theme-color" content="#173b35" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="MyIdealBody AI — A clearer starting point for every plate" />
+    <meta
+      property="og:description"
+      content="Photo-based calorie and protein estimates, built with Indonesian meals and honest uncertainty in mind."
+    />
+    <title>MyIdealBody AI — Photo nutrition estimates</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body data-repository-url="https://github.com/meetmetisa-dev/myidealbody-ai">
+    <a class="skip-link" href="#main-content" data-i18n="skipLink">Skip to main content</a>
+
+    <header class="site-header" data-header>
+      <div class="container nav-shell">
+        <a class="brand" href="#top" aria-label="MyIdealBody AI home" data-i18n-aria="brandHome">
+          <svg class="brand-mark" viewBox="0 0 44 44" aria-hidden="true">
+            <path d="M22 3.5c10.2 0 18.5 8.3 18.5 18.5S32.2 40.5 22 40.5 3.5 32.2 3.5 22 11.8 3.5 22 3.5Z" />
+            <path class="brand-leaf" d="M12.8 23.2c4.6-5.7 10.7-8.4 18.4-8.1-1.2 7.5-5.6 12.2-13.3 14.2" />
+            <path class="brand-stem" d="M13.5 31.2c4.1-6.1 9.1-10.2 15.1-12.4" />
+          </svg>
+          <span>MyIdealBody <strong>AI</strong></span>
+        </a>
+
+        <button
+          class="menu-button"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+          aria-label="Open menu"
+          data-i18n-aria="menuOpen"
+          data-menu-button
+        >
+          <span></span><span></span><span></span>
+        </button>
+
+        <div class="nav-panel" id="site-nav" data-nav-panel>
+          <nav aria-label="Primary navigation" data-i18n-aria="primaryNav">
+            <a href="#features" data-i18n="navWhy">Why it works</a>
+            <a href="#demo" data-i18n="navDemo">Demo</a>
+            <a href="#pricing" data-i18n="navPricing">Pricing</a>
+            <a href="#status" data-i18n="navStatus">Build status</a>
+          </nav>
+          <div class="language-switch" aria-label="Choose language" data-i18n-aria="languagePicker" role="group">
+            <button type="button" data-lang="en" aria-pressed="true">EN</button>
+            <button type="button" data-lang="id" aria-pressed="false">ID</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="hero" id="top">
+        <div class="hero-orb hero-orb-one" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">
+              <span class="eyebrow-dot" aria-hidden="true"></span>
+              <span data-i18n="heroEyebrow">Development prototype · English + Bahasa Indonesia</span>
+            </p>
+            <h1 data-i18n="heroTitle">A clearer starting point for every plate.</h1>
+            <p class="hero-intro" data-i18n="heroBody">
+              Photograph a meal to estimate calorie and protein ranges, review what was detected, and adjust the result before saving.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#demo">
+                <span data-i18n="heroPrimary">Try the interactive demo</span>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" /></svg>
+              </a>
+              <a class="button button-secondary" href="#status" data-i18n="heroSecondary">See what is ready</a>
+            </div>
+            <p class="availability-note">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm0-11v3.5l2.4 1.5" /></svg>
+              <span data-i18n="heroNote">Source MVP for closed-beta development — not yet on Google Play.</span>
+            </p>
+            <ul class="hero-trust" aria-label="Product principles" data-i18n-aria="productPrinciples">
+              <li><span aria-hidden="true">✓</span><span data-i18n="trustRanges">Honest ranges</span></li>
+              <li><span aria-hidden="true">✓</span><span data-i18n="trustEditable">Review before saving</span></li>
+              <li><span aria-hidden="true">✓</span><span data-i18n="trustLocal">Indonesian meal focus</span></li>
+            </ul>
+          </div>
+
+          <div class="phone-scene reveal reveal-delay" aria-label="MyIdealBody AI app preview" data-i18n-aria="phonePreview">
+            <div class="phone-halo" aria-hidden="true"></div>
+            <div class="phone">
+              <div class="phone-speaker" aria-hidden="true"></div>
+              <div class="phone-screen">
+                <div class="phone-status" aria-hidden="true"><span>9:41</span><span>● ◔ ▰</span></div>
+                <div class="app-head">
+                  <div>
+                    <span class="app-overline" data-i18n="phoneToday">Today</span>
+                    <strong data-i18n="phoneGreeting">Good afternoon</strong>
+                  </div>
+                  <div class="avatar" aria-hidden="true">TS</div>
+                </div>
+                <div class="summary-card">
+                  <div class="summary-head">
+                    <div>
+                      <span data-i18n="phoneLogged">Logged</span>
+                      <strong>1,240 <small>kcal</small></strong>
+                    </div>
+                    <div class="progress-ring"><span>65%</span></div>
+                  </div>
+                  <div class="protein-row">
+                    <span data-i18n="phoneProtein">Protein</span>
+                    <strong>72 / 110 g</strong>
+                  </div>
+                  <div class="bar"><span></span></div>
+                </div>
+                <div class="app-section-title">
+                  <strong data-i18n="phoneMeals">Meals</strong><span data-i18n="phoneEntries">3 entries</span>
+                </div>
+                <div class="meal-row">
+                  <div class="meal-thumb meal-thumb-one" aria-hidden="true"></div>
+                  <div><strong data-i18n="phoneLunch">Lunch</strong><span>Nasi, ayam, tempe</span></div>
+                  <strong>640</strong>
+                </div>
+                <div class="meal-row">
+                  <div class="meal-thumb meal-thumb-two" aria-hidden="true"></div>
+                  <div><strong data-i18n="phoneSnack">Snack</strong><span>Pisang, yogurt</span></div>
+                  <strong>210</strong>
+                </div>
+                <button class="app-scan" type="button" data-scroll-demo>
+                  <span class="camera-icon" aria-hidden="true"></span>
+                  <span data-i18n="phoneCta">Photograph a meal</span>
+                </button>
+              </div>
+            </div>
+            <div class="floating-card floating-card-top">
+              <span class="floating-icon">P</span>
+              <div><strong>38–49 g</strong><span data-i18n="floatingProtein">estimated protein</span></div>
+            </div>
+            <div class="floating-card floating-card-bottom">
+              <span class="confidence-pip" aria-hidden="true"></span>
+              <div><strong data-i18n="floatingReview">Review first</strong><span data-i18n="floatingControl">You stay in control</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="principles section" id="features">
+        <div class="container">
+          <div class="section-heading centered reveal">
+            <p class="section-kicker" data-i18n="whyKicker">Useful, not overconfident</p>
+            <h2 data-i18n="whyTitle">Nutrition tracking that respects what a photo cannot know.</h2>
+            <p data-i18n="whyBody">Portion size, oil, sauces, and hidden ingredients change the numbers. MyIdealBody AI makes uncertainty visible and correction easy.</p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card reveal">
+              <div class="feature-number">01</div>
+              <div class="feature-icon icon-frame" aria-hidden="true"></div>
+              <h3 data-i18n="featureOneTitle">Capture with guidance</h3>
+              <p data-i18n="featureOneBody">Simple framing and lighting prompts help you take a useful still photo without continuous video analysis.</p>
+            </article>
+            <article class="feature-card reveal reveal-delay-short">
+              <div class="feature-number">02</div>
+              <div class="feature-icon icon-range" aria-hidden="true"><span></span><span></span></div>
+              <h3 data-i18n="featureTwoTitle">See a realistic range</h3>
+              <p data-i18n="featureTwoBody">Calories and protein appear as estimates with a confidence label—not false decimal-level precision.</p>
+            </article>
+            <article class="feature-card reveal reveal-delay">
+              <div class="feature-number">03</div>
+              <div class="feature-icon icon-edit" aria-hidden="true"></div>
+              <h3 data-i18n="featureThreeTitle">Correct before saving</h3>
+              <p data-i18n="featureThreeBody">Adjust detected portions and review prompts about oil, santan, or sweet sauce. Prompt-based recalculation is planned.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section section" id="demo">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="section-kicker" data-i18n="demoKicker">Interactive product preview</p>
+            <h2 data-i18n="demoTitle">See how a meal becomes an editable estimate.</h2>
+            <p data-i18n="demoBody">This browser demo uses a fixed sample meal. It does not upload a photo or run the production model.</p>
+          </div>
+
+          <div class="demo-shell reveal" data-demo-shell>
+            <div class="demo-visual">
+              <div class="demo-label-row">
+                <span class="live-label"><span aria-hidden="true"></span><span data-i18n="demoCamera">Camera guidance</span></span>
+                <span data-i18n="demoHint">Whole plate in frame</span>
+              </div>
+              <div class="meal-art" role="img" aria-label="Illustrated Indonesian rice, grilled chicken, tempeh, and vegetables on a plate" data-i18n-aria="mealArt">
+                <svg viewBox="0 0 620 430" aria-hidden="true">
+                  <defs>
+                    <filter id="plate-shadow" x="-20%" y="-20%" width="140%" height="150%">
+                      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#092a26" flood-opacity=".16" />
+                    </filter>
+                    <linearGradient id="chicken" x1="0" x2="1" y1="0" y2="1">
+                      <stop offset="0" stop-color="#d98550" /><stop offset="1" stop-color="#914326" />
+                    </linearGradient>
+                  </defs>
+                  <ellipse cx="310" cy="225" rx="225" ry="170" fill="#f8f2e7" opacity=".35" />
+                  <ellipse cx="310" cy="210" rx="205" ry="153" fill="#fffdf8" filter="url(#plate-shadow)" />
+                  <ellipse cx="310" cy="210" rx="178" ry="128" fill="#f7f1e6" />
+                  <path d="M178 177c14-51 74-82 121-50 37 25 29 89-18 112-50 24-118-7-103-62Z" fill="#fbf8ec" />
+                  <g fill="#ded5bc" opacity=".75">
+                    <ellipse cx="212" cy="158" rx="5" ry="11" transform="rotate(25 212 158)" />
+                    <ellipse cx="245" cy="143" rx="5" ry="11" transform="rotate(-14 245 143)" />
+                    <ellipse cx="270" cy="177" rx="5" ry="11" transform="rotate(35 270 177)" />
+                    <ellipse cx="221" cy="198" rx="5" ry="11" transform="rotate(-35 221 198)" />
+                    <ellipse cx="258" cy="207" rx="5" ry="11" transform="rotate(12 258 207)" />
+                  </g>
+                  <path d="M314 128c32-35 96-27 116 11 18 35-10 91-58 101-50 10-83-31-75-67 4-18 8-35 17-45Z" fill="url(#chicken)" />
+                  <path d="M331 151c22-18 55-19 78-4M325 176c24-16 60-12 84 3M322 201c24-8 52-4 71 10" fill="none" stroke="#682d1d" stroke-width="8" stroke-linecap="round" opacity=".55" />
+                  <g>
+                    <rect x="348" y="254" width="71" height="43" rx="10" fill="#c78234" transform="rotate(8 348 254)" />
+                    <rect x="420" y="243" width="68" height="42" rx="10" fill="#d6953f" transform="rotate(-8 420 243)" />
+                    <circle cx="368" cy="273" r="3" fill="#8a5529" /><circle cx="397" cy="278" r="3" fill="#8a5529" />
+                    <circle cx="441" cy="263" r="3" fill="#8a5529" /><circle cx="468" cy="259" r="3" fill="#8a5529" />
+                  </g>
+                  <g fill="none" stroke-linecap="round">
+                    <path d="M188 260c18-22 31-21 45 3s32 27 49 3" stroke="#3e885d" stroke-width="19" />
+                    <path d="M196 292c18-21 36-18 49 1s29 19 48-1" stroke="#67a866" stroke-width="17" />
+                    <path d="M242 244c10 20 29 31 54 32" stroke="#87b95d" stroke-width="15" />
+                  </g>
+                  <g fill="#e05236">
+                    <circle cx="287" cy="284" r="10" /><circle cx="312" cy="267" r="8" /><circle cx="306" cy="299" r="7" />
+                  </g>
+                </svg>
+                <div class="scan-corners" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+                <div class="scan-line" aria-hidden="true"></div>
+              </div>
+              <button class="button button-primary demo-button" type="button" data-demo-button>
+                <span class="camera-icon small" aria-hidden="true"></span>
+                <span data-i18n="demoButton">Analyze sample meal</span>
+              </button>
+            </div>
+
+            <div class="demo-result" aria-live="polite" aria-busy="false" data-demo-result>
+              <div class="result-idle" data-result-idle>
+                <div class="result-idle-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32"><path d="M5 9.5h5l2-3h8l2 3h5v16H5v-16Z" /><circle cx="16" cy="17" r="5" /></svg>
+                </div>
+                <p class="section-kicker" data-i18n="demoIdleKicker">Ready when you are</p>
+                <h3 data-i18n="demoIdleTitle">Start with the sample plate</h3>
+                <p data-i18n="demoIdleBody">The preview will show example ranges, detected items, confidence, and a clarification question.</p>
+              </div>
+
+              <div class="result-loading" hidden data-result-loading>
+                <div class="loader" aria-hidden="true"><span></span><span></span><span></span></div>
+                <p class="section-kicker" data-i18n="demoLoadingKicker">Sample analysis</p>
+                <h3 data-demo-loading-title data-i18n="demoLoadingOne">Identifying likely foods…</h3>
+                <p data-i18n="demoLoadingBody">A production result would be calculated from a nutrient database after recognition.</p>
+              </div>
+
+              <div class="result-content" hidden data-result-content>
+                <div class="result-topline">
+                  <div>
+                    <p class="section-kicker" data-i18n="demoResultKicker">Example estimate</p>
+                    <h3 data-i18n="demoResultTitle">Lunch plate</h3>
+                  </div>
+                  <span class="confidence-badge"><span aria-hidden="true"></span><span data-i18n="demoConfidence">Medium confidence</span></span>
+                </div>
+                <div class="macro-grid">
+                  <div class="macro-card calories"><span data-i18n="demoCalories">Calories</span><strong>610–760</strong><small>kcal</small></div>
+                  <div class="macro-card protein"><span data-i18n="demoProtein">Protein</span><strong>38–49</strong><small>g</small></div>
+                </div>
+                <p class="range-note"><span aria-hidden="true">i</span><span data-i18n="demoRangeNote">A range reflects likely portion and recipe differences.</span></p>
+                <div class="detected-list">
+                  <div class="detected-heading"><strong data-i18n="demoDetected">Likely foods</strong><span data-i18n="demoEdit">Review in app</span></div>
+                  <div><span><i class="food-dot rice"></i><span data-i18n="foodRice">White rice</span></span><strong>180–220 g</strong></div>
+                  <div><span><i class="food-dot chicken"></i><span data-i18n="foodChicken">Grilled chicken</span></span><strong>110–140 g</strong></div>
+                  <div><span><i class="food-dot tempe"></i><span data-i18n="foodTempe">Tempeh</span></span><strong>55–70 g</strong></div>
+                  <div><span><i class="food-dot veg"></i><span data-i18n="foodVeg">Mixed vegetables</span></span><strong>80–110 g</strong></div>
+                </div>
+                <div class="question-card">
+                  <span class="question-mark" aria-hidden="true">?</span>
+                  <div><strong data-i18n="demoQuestionTitle">One quick check</strong><p data-i18n="demoQuestionBody">Was extra oil or sweet sauce added?</p></div>
+                </div>
+                <p class="demo-disclaimer" data-i18n="demoDisclaimer">Illustrative sample only. Not a measurement or medical advice.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="local-section section">
+        <div class="container local-grid">
+          <div class="local-copy reveal">
+            <p class="section-kicker" data-i18n="localKicker">Built from an Indonesian starting point</p>
+            <h2 data-i18n="localTitle">“Rice and curry” is not enough detail.</h2>
+            <p data-i18n="localBody">Everyday meals can combine rice, lauk, vegetables, sambal, coconut milk, and cooking oil. The product is designed to ask useful questions and learn where generic food labels fall short.</p>
+            <div class="local-tags" aria-label="Example Indonesian meals" data-i18n-aria="mealExamples">
+              <span>Nasi Padang</span><span>Ayam bakar</span><span>Tempe</span><span>Soto ayam</span><span>Gado-gado</span><span>Menu warteg</span>
+            </div>
+          </div>
+          <div class="comparison-card reveal reveal-delay">
+            <div class="comparison-head">
+              <span data-i18n="compareTitle">A better review flow</span>
+              <span class="beta-pill">BETA</span>
+            </div>
+            <div class="comparison-row muted">
+              <span class="comparison-icon" aria-hidden="true">×</span>
+              <div><strong data-i18n="compareGeneric">Generic guess</strong><p data-i18n="compareGenericBody">“Mixed rice — 650 kcal”</p></div>
+            </div>
+            <div class="comparison-divider" aria-hidden="true"></div>
+            <div class="comparison-row good">
+              <span class="comparison-icon" aria-hidden="true">✓</span>
+              <div><strong data-i18n="compareProduct">MyIdealBody approach</strong><p data-i18n="compareProductBody">Likely components + portion ranges + review notes about oil or santan + adjustable portions</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="how-section section">
+        <div class="container">
+          <div class="section-heading centered reveal">
+            <p class="section-kicker" data-i18n="howKicker">One minute, three steps</p>
+            <h2 data-i18n="howTitle">From plate to diary—without the spreadsheet feeling.</h2>
+          </div>
+          <ol class="steps-grid">
+            <li class="step-card reveal">
+              <span class="step-index">1</span>
+              <h3 data-i18n="stepOneTitle">Photograph</h3>
+              <p data-i18n="stepOneBody">Use the camera guide or choose a meal photo from your gallery.</p>
+            </li>
+            <li class="step-card reveal reveal-delay-short">
+              <span class="step-index">2</span>
+              <h3 data-i18n="stepTwoTitle">Review</h3>
+              <p data-i18n="stepTwoBody">Check detected foods, portions, confidence, and hidden-ingredient prompts.</p>
+            </li>
+            <li class="step-card reveal reveal-delay">
+              <span class="step-index">3</span>
+              <h3 data-i18n="stepThreeTitle">Save</h3>
+              <p data-i18n="stepThreeBody">Correct anything that looks wrong, then add the meal to your local diary.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="privacy-section section">
+        <div class="container privacy-shell reveal">
+          <div class="privacy-main">
+            <span class="shield-icon" aria-hidden="true">
+              <svg viewBox="0 0 40 40"><path d="M20 3 34 8v10c0 9-5.6 15.5-14 19-8.4-3.5-14-10-14-19V8l14-5Z" /><path d="m14 20 4 4 8-9" /></svg>
+            </span>
+            <p class="section-kicker" data-i18n="privacyKicker">Privacy should be visible</p>
+            <h2 data-i18n="privacyTitle">Your meal is data. Treat it that way.</h2>
+            <p data-i18n="privacyBody">The MVP is designed around deliberate photo submission, minimal permissions, and clear deletion controls. Meal photos should never be used for model training without separate opt-in.</p>
+          </div>
+          <div class="privacy-points">
+            <div><span aria-hidden="true">01</span><p><strong data-i18n="privacyOneTitle">Choose what to submit</strong><small data-i18n="privacyOneBody">No continuous camera analysis in version one.</small></p></div>
+            <div><span aria-hidden="true">02</span><p><strong data-i18n="privacyTwoTitle">Ask for less access</strong><small data-i18n="privacyTwoBody">Use the system photo picker instead of broad gallery permission.</small></p></div>
+            <div><span aria-hidden="true">03</span><p><strong data-i18n="privacyThreeTitle">Keep health claims honest</strong><small data-i18n="privacyThreeBody">General wellness estimates—not diagnosis or medical advice.</small></p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing-section section" id="pricing">
+        <div class="container">
+          <div class="section-heading centered reveal">
+            <p class="section-kicker" data-i18n="pricingKicker">Planned launch pricing</p>
+            <h2 data-i18n="pricingTitle">Start free. Upgrade when the habit sticks.</h2>
+            <p data-i18n="pricingBody">These are launch targets, not active website purchases. Final checkout and localized pricing will be handled by Google Play.</p>
+          </div>
+          <div class="pricing-grid">
+            <article class="price-card reveal">
+              <div class="price-topline"><span class="flag" aria-hidden="true">ID</span><span data-i18n="priceIndonesia">Indonesia</span></div>
+              <h3 data-i18n="priceLocalPlan">Pro monthly</h3>
+              <p class="price"><strong>Rp49.000</strong><span data-i18n="perMonth">/ month</span></p>
+              <p data-i18n="priceLocalBody">A low-friction monthly option for the first local market.</p>
+              <ul>
+                <li><span aria-hidden="true">✓</span><span data-i18n="priceFeatureOne">More photo analyses</span></li>
+                <li><span aria-hidden="true">✓</span><span data-i18n="priceFeatureTwo">Editable calorie and protein ranges</span></li>
+                <li><span aria-hidden="true">✓</span><span data-i18n="priceFeatureThree">Planned expanded history and insights</span></li>
+              </ul>
+              <a class="button button-secondary button-block repo-link" href="#status" data-i18n="priceCta">Follow the beta</a>
+            </article>
+            <article class="price-card featured reveal reveal-delay">
+              <span class="price-ribbon" data-i18n="priceValue">Annual value</span>
+              <div class="price-topline"><span class="globe" aria-hidden="true">◎</span><span data-i18n="priceGlobal">Global</span></div>
+              <h3 data-i18n="priceGlobalPlan">Pro annual</h3>
+              <p class="price"><strong>US$19.99</strong><span data-i18n="perYear">/ year</span></p>
+              <p data-i18n="priceGlobalBody">Approximately US$20 per year for international launch markets.</p>
+              <ul>
+                <li><span aria-hidden="true">✓</span><span data-i18n="priceFeatureOne">More photo analyses</span></li>
+                <li><span aria-hidden="true">✓</span><span data-i18n="priceFeatureTwo">Editable calorie and protein ranges</span></li>
+                <li><span aria-hidden="true">✓</span><span data-i18n="priceFeatureThree">Planned expanded history and insights</span></li>
+              </ul>
+              <a class="button button-primary button-block repo-link" href="#status" data-i18n="priceCta">Follow the beta</a>
+            </article>
+          </div>
+          <p class="pricing-note" data-i18n="pricingNote">Free target: 3 completed analyses per day. Taxes, exchange rates, and Play-localized prices may vary.</p>
+        </div>
+      </section>
+
+      <section class="status-section section" id="status">
+        <div class="container status-shell reveal">
+          <div>
+            <p class="section-kicker light" data-i18n="statusKicker">Transparent build status</p>
+            <h2 data-i18n="statusTitle">The source MVP is ready. The paid public release is not.</h2>
+            <p data-i18n="statusBody">The bilingual Android client, API, demo recognizer, editable result flow, local diary, and billing interface are in the repository. Production recognition validation, authentication, server-side entitlement checks, and Play Console setup remain before launch.</p>
+          </div>
+          <div class="status-panel">
+            <div class="status-row ready"><span aria-hidden="true">✓</span><p><strong data-i18n="readyLabel">Ready in source</strong><small data-i18n="readyBody">English + Indonesian MVP and documented backend</small></p></div>
+            <div class="status-row next"><span aria-hidden="true">→</span><p><strong data-i18n="nextLabel">Next milestone</strong><small data-i18n="nextBody">Measured closed beta on representative Indonesian meals</small></p></div>
+            <div class="status-row later"><span aria-hidden="true">○</span><p><strong data-i18n="laterLabel">Not live yet</strong><small data-i18n="laterBody">Google Play subscriptions and production food analysis</small></p></div>
+            <a class="button button-light button-block repo-link" href="#top">
+              <span data-i18n="statusCta">View source and releases</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" /></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq-section section">
+        <div class="container faq-grid">
+          <div class="section-heading reveal">
+            <p class="section-kicker" data-i18n="faqKicker">Good questions, direct answers</p>
+            <h2 data-i18n="faqTitle">Before you point the camera.</h2>
+          </div>
+          <div class="faq-list reveal reveal-delay">
+            <details>
+              <summary data-i18n="faqOneQ">Can a photo measure exact calories?</summary>
+              <p data-i18n="faqOneA">No. A photo cannot reveal exact weight or every ingredient. MyIdealBody AI is designed to return a useful range, explain uncertainty, and let you edit the result.</p>
+            </details>
+            <details>
+              <summary data-i18n="faqTwoQ">Is the app available on Google Play?</summary>
+              <p data-i18n="faqTwoA">Not yet. The repository is a development MVP for closed-beta preparation. A public paid release needs production validation and Play setup first.</p>
+            </details>
+            <details>
+              <summary data-i18n="faqThreeQ">Does it analyze live video?</summary>
+              <p data-i18n="faqThreeA">The prototype shows a framing overlay and a live lighting cue, then analyzes one still photo. This reduces battery and data use while keeping the review step clear.</p>
+            </details>
+            <details>
+              <summary data-i18n="faqFourQ">Is this medical or dietetic advice?</summary>
+              <p data-i18n="faqFourA">No. It provides general wellness estimates only and is not a diagnosis, treatment, laboratory measurement, or substitute for a qualified professional.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand footer-brand" href="#top" aria-label="MyIdealBody AI home" data-i18n-aria="brandHome">
+            <svg class="brand-mark" viewBox="0 0 44 44" aria-hidden="true">
+              <path d="M22 3.5c10.2 0 18.5 8.3 18.5 18.5S32.2 40.5 22 40.5 3.5 32.2 3.5 22 11.8 3.5 22 3.5Z" />
+              <path class="brand-leaf" d="M12.8 23.2c4.6-5.7 10.7-8.4 18.4-8.1-1.2 7.5-5.6 12.2-13.3 14.2" />
+              <path class="brand-stem" d="M13.5 31.2c4.1-6.1 9.1-10.2 15.1-12.4" />
+            </svg>
+            <span>MyIdealBody <strong>AI</strong></span>
+          </a>
+          <p data-i18n="footerTagline">A practical, honest starting point for everyday nutrition tracking.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#demo" data-i18n="navDemo">Demo</a>
+          <a href="#pricing" data-i18n="navPricing">Pricing</a>
+          <a href="#status" data-i18n="navStatus">Build status</a>
+          <a class="repo-link" href="#top" data-i18n="footerSource">Source code</a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© <span data-year></span> MyIdealBody AI</span>
+        <span data-i18n="footerDisclaimer">Estimates for general wellness. Not medical advice.</span>
+      </div>
+    </footer>
+  </body>
+</html>

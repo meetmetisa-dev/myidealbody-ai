@@ -1,0 +1,37 @@
+#!/usr/bin/env sh
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if command -v gradle >/dev/null 2>&1; then
+  exec gradle "$@"
+fi
+
+GRADLE_VERSION=8.13
+GRADLE_CACHE_ROOT=${GRADLE_USER_HOME:-"${XDG_CACHE_HOME:-$HOME/.cache}/gradle"}
+GRADLE_DIR="$GRADLE_CACHE_ROOT/manual-dists/gradle-$GRADLE_VERSION"
+GRADLE_BIN="$GRADLE_DIR/bin/gradle"
+
+if [ ! -x "$GRADLE_BIN" ]; then
+  ARCHIVE="$GRADLE_CACHE_ROOT/manual-dists/gradle-$GRADLE_VERSION-bin.zip"
+  mkdir -p "$GRADLE_CACHE_ROOT/manual-dists"
+  if [ ! -f "$ARCHIVE" ]; then
+    URL="https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip"
+    if command -v curl >/dev/null 2>&1; then
+      curl --fail --location --retry 3 --output "$ARCHIVE" "$URL"
+    elif command -v wget >/dev/null 2>&1; then
+      wget --output-document="$ARCHIVE" "$URL"
+    else
+      echo "Install Gradle $GRADLE_VERSION, curl, or wget." >&2
+      exit 1
+    fi
+  fi
+  command -v unzip >/dev/null 2>&1 || {
+    echo "unzip is required to bootstrap Gradle." >&2
+    exit 1
+  }
+  unzip -q -o "$ARCHIVE" -d "$GRADLE_CACHE_ROOT/manual-dists"
+fi
+
+cd "$SCRIPT_DIR"
+exec "$GRADLE_BIN" "$@"
+

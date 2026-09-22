@@ -1,0 +1,304 @@
+{
+  "metadata": {
+    "schema_version": "1.0.0",
+    "approximate_demo_data": true,
+    "dataset_id": "myidealbody-demo-foods-v1",
+    "title": {
+      "en": "MyIdealBody demo nutrition catalog",
+      "id": "Katalog nutrisi demo MyIdealBody"
+    },
+    "nutrition_basis": "Approximate representative nutrients per 100 g of edible prepared food",
+    "reviewed_on": "2026-09-19",
+    "disclaimer": {
+      "en": "All values in this demo catalog are approximate estimates, not authoritative or laboratory-tested data. Recipe, brand, cooking method, and portion size can substantially change nutrition values.",
+      "id": "Semua nilai dalam katalog demo ini merupakan perkiraan dan bukan data otoritatif atau hasil uji laboratorium. Resep, merek, cara memasak, dan ukuran porsi dapat sangat mengubah nilai gizi."
+    },
+    "source_note": "These demo records are representative product-development estimates and are not attributed to an individual external source.",
+    "licensing_note": "Before production, replace or validate values using authorized TKPI data (permission may be required for the intended commercial use) and/or USDA FoodData Central data (CC0). Preserve provenance for each production record."
+  },
+  "foods": [
+    {
+      "id": "nasi_putih",
+      "name": {"en": "Cooked white rice", "id": "Nasi putih"},
+      "aliases": ["white rice", "steamed rice", "rice", "nasi", "nasi putih matang"],
+      "nutrients_per_100g": {"calories_kcal": 130, "protein_g": 2.4, "carbs_g": 28.2, "fat_g": 0.3},
+      "portions": [
+        {"id": "tablespoon", "label": {"en": "1 tablespoon", "id": "1 sendok makan"}, "grams": 15},
+        {"id": "scoop", "label": {"en": "1 rice scoop", "id": "1 centong"}, "grams": 100},
+        {"id": "bowl", "label": {"en": "1 medium bowl", "id": "1 mangkuk sedang"}, "grams": 200}
+      ],
+      "ambiguity_tags": []
+    },
+    {
+      "id": "nasi_merah",
+      "name": {"en": "Cooked brown rice", "id": "Nasi merah"},
+      "aliases": ["brown rice", "whole-grain rice", "beras merah matang", "nasi beras merah"],
+      "nutrients_per_100g": {"calories_kcal": 123, "protein_g": 2.7, "carbs_g": 25.6, "fat_g": 1.0},
+      "portions": [
+        {"id": "scoop", "label": {"en": "1 rice scoop", "id": "1 centong"}, "grams": 100},
+        {"id": "bowl", "label": {"en": "1 medium bowl", "id": "1 mangkuk sedang"}, "grams": 200}
+      ],
+      "ambiguity_tags": []
+    },
+    {
+      "id": "nasi_goreng",
+      "name": {"en": "Indonesian fried rice", "id": "Nasi goreng"},
+      "aliases": ["nasi goreng", "fried rice", "nasgor", "nasi goreng biasa"],
+      "nutrients_per_100g": {"calories_kcal": 180, "protein_g": 5.0, "carbs_g": 28.0, "fat_g": 6.5},
+      "portions": [
+        {"id": "small_plate", "label": {"en": "1 small plate", "id": "1 piring kecil"}, "grams": 250},
+        {"id": "regular_plate", "label": {"en": "1 regular plate", "id": "1 piring biasa"}, "grams": 350}
+      ],
+      "ambiguity_tags": ["oil"]
+    },
+    {
+      "id": "dada_ayam_panggang",
+      "name": {"en": "Grilled chicken breast", "id": "Dada ayam panggang"},
+      "aliases": ["chicken breast", "grilled chicken", "skinless chicken breast", "dada ayam bakar", "ayam panggang tanpa kulit"],
+      "nutrients_per_100g": {"calories_kcal": 165, "protein_g": 31.0, "carbs_g": 0.0, "fat_g": 3.6},
+      "portions": [
+        {"id": "small_fillet", "label": {"en": "1 small fillet", "id": "1 filet kecil"}, "grams": 100},
+        {"id": "medium_fillet", "label": {"en": "1 medium fillet", "id": "1 filet sedang"}, "grams": 150}
+      ],
+      "ambiguity_tags": ["oil"]
+    },
+    {
+      "id": "ayam_goreng",
+      "name": {"en": "Fried chicken", "id": "Ayam goreng"},
+      "aliases": ["fried chicken", "fried chicken piece", "ayam goreng berbumbu", "sepotong ayam goreng"],
+      "nutrients_per_100g": {"calories_kcal": 246, "protein_g": 27.0, "carbs_g": 8.0, "fat_g": 12.0},
+      "portions": [
+        {"id": "drumstick", "label": {"en": "1 drumstick", "id": "1 paha bawah"}, "grams": 85},
+        {"id": "breast_piece", "label": {"en": "1 breast piece", "id": "1 potong dada"}, "grams": 140}
+      ],
+      "ambiguity_tags": ["oil"]
+    },
+    {
+      "id": "rendang",
+      "name": {"en": "Beef rendang", "id": "Rendang sapi"},
+      "aliases": ["rendang", "beef rendang", "rendang daging", "daging rendang"],
+      "nutrients_per_100g": {"calories_kcal": 195, "protein_g": 19.0, "carbs_g": 6.0, "fat_g": 11.0},
+      "portions": [
+        {"id": "small_piece", "label": {"en": "1 small piece", "id": "1 potong kecil"}, "grams": 50},
+        {"id": "serving", "label": {"en": "1 serving", "id": "1 porsi"}, "grams": 100}
+      ],
+      "ambiguity_tags": ["oil", "coconut_milk"]
+    },
+    {
+      "id": "sate_ayam",
+      "name": {"en": "Chicken satay with peanut sauce", "id": "Sate ayam dengan bumbu kacang"},
+      "aliases": ["chicken satay", "chicken sate", "satay ayam", "sate ayam", "sate bumbu kacang"],
+      "nutrients_per_100g": {"calories_kcal": 220, "protein_g": 24.0, "carbs_g": 8.0, "fat_g": 10.0},
+      "portions": [
+        {"id": "skewer", "label": {"en": "1 skewer", "id": "1 tusuk"}, "grams": 25},
+        {"id": "ten_skewers", "label": {"en": "10 skewers", "id": "10 tusuk"}, "grams": 250}
+      ],
+      "ambiguity_tags": ["oil", "sugar"]
+    },
+    {
+      "id": "tempe_goreng",
+      "name": {"en": "Fried tempeh", "id": "Tempe goreng"},
+      "aliases": ["fried tempeh", "fried tempe", "tempe", "tempe goreng tepung"],
+      "nutrients_per_100g": {"calories_kcal": 271, "protein_g": 18.0, "carbs_g": 14.0, "fat_g": 17.0},
+      "portions": [
+        {"id": "thin_slice", "label": {"en": "1 thin slice", "id": "1 iris tipis"}, "grams": 25},
+        {"id": "medium_piece", "label": {"en": "1 medium piece", "id": "1 potong sedang"}, "grams": 50}
+      ],
+      "ambiguity_tags": ["oil"]
+    },
+    {
+      "id": "tahu_goreng",
+      "name": {"en": "Fried tofu", "id": "Tahu goreng"},
+      "aliases": ["fried tofu", "fried bean curd", "tahu", "tahu goreng biasa"],
+      "nutrients_per_100g": {"calories_kcal": 230, "protein_g": 15.0, "carbs_g": 8.0, "fat_g": 16.0},
+      "portions": [
+        {"id": "small_piece", "label": {"en": "1 small piece", "id": "1 potong kecil"}, "grams": 35},
+        {"id": "large_piece", "label": {"en": "1 large piece", "id": "1 potong besar"}, "grams": 70}
+      ],
+      "ambiguity_tags": ["oil"]
+    },
+    {
+      "id": "telur_rebus",
+      "name": {"en": "Boiled egg", "id": "Telur rebus"},
+      "aliases": ["boiled egg", "hard-boiled egg", "telur ayam rebus", "telur matang"],
+      "nutrients_per_100g": {"calories_kcal": 155, "protein_g": 12.6, "carbs_g": 1.1, "fat_g": 10.6},
+      "portions": [
+        {"id": "medium_egg", "label": {"en": "1 medium egg", "id": "1 butir sedang"}, "grams": 44},
+        {"id": "large_egg", "label": {"en": "1 large egg", "id": "1 butir besar"}, "grams": 50}
+      ],
+      "ambiguity_tags": []
+    },
+    {
+      "id": "fried_egg",
+      "name": {"en": "Fried egg", "id": "Telur goreng"},
+      "aliases": ["sunny-side-up egg", "fried egg", "telur mata sapi", "telur ceplok"],
+      "nutrients_per_100g": {"calories_kcal": 196, "protein_g": 13.6, "carbs_g": 0.8, "fat_g": 15.3},
+      "portions": [
+        {"id": "medium_egg", "label": {"en": "1 medium fried egg", "id": "1 telur goreng sedang"}, "grams": 46},
+        {"id": "large_egg", "label": {"en": "1 large fried egg", "id": "1 telur goreng besar"}, "grams": 55}
+      ],
+      "ambiguity_tags": ["oil"]
+    },
+    {
+      "id": "gado_gado",
+      "name": {"en": "Vegetable salad with peanut sauce", "id": "Gado-gado"},
+      "aliases": ["gado gado", "Indonesian vegetable salad", "gado-gado sayur"],
+      "nutrients_per_100g": {"calories_kcal": 145, "protein_g": 5.5, "carbs_g": 12.0, "fat_g": 8.5},
+      "portions": [
+        {"id": "small_plate", "label": {"en": "1 small plate", "id": "1 piring kecil"}, "grams": 250},
+        {"id": "regular_plate", "label": {"en": "1 regular plate", "id": "1 piring biasa"}, "grams": 350}
+      ],
+      "ambiguity_tags": ["oil", "sugar"]
+    },
+    {
+      "id": "soto_ayam",
+      "name": {"en": "Indonesian chicken soup", "id": "Soto ayam"},
+      "aliases": ["chicken soto", "yellow chicken soup", "soto ayam kuning", "soto"],
+      "density_g_per_ml": 1.02,
+      "nutrients_per_100g": {"calories_kcal": 70, "protein_g": 6.0, "carbs_g": 4.5, "fat_g": 3.0},
+      "portions": [
+        {"id": "small_bowl", "label": {"en": "1 small bowl", "id": "1 mangkuk kecil"}, "grams": 250},
+        {"id": "regular_bowl", "label": {"en": "1 regular bowl", "id": "1 mangkuk biasa"}, "grams": 350}
+      ],
+      "ambiguity_tags": ["oil"]
+    },
+    {
+      "id": "bakso",
+      "name": {"en": "Meatball soup", "id": "Bakso kuah"},
+      "aliases": ["bakso", "Indonesian meatball soup", "bakso sapi", "mie bakso"],
+      "density_g_per_ml": 1.02,
+      "nutrients_per_100g": {"calories_kcal": 78, "protein_g": 6.0, "carbs_g": 5.0, "fat_g": 4.0},
+      "portions": [
+        {"id": "meatball", "label": {"en": "1 medium meatball", "id": "1 bakso sedang"}, "grams": 25},
+        {"id": "bowl", "label": {"en": "1 bowl with broth", "id": "1 mangkuk dengan kuah"}, "grams": 400}
+      ],
+      "ambiguity_tags": ["oil"]
+    },
+    {
+      "id": "mie_goreng",
+      "name": {"en": "Indonesian fried noodles", "id": "Mi goreng"},
+      "aliases": ["mie goreng", "mi goreng", "fried noodles", "bakmi goreng"],
+      "nutrients_per_100g": {"calories_kcal": 190, "protein_g": 6.0, "carbs_g": 29.0, "fat_g": 6.0},
+      "portions": [
+        {"id": "small_plate", "label": {"en": "1 small plate", "id": "1 piring kecil"}, "grams": 250},
+        {"id": "regular_plate", "label": {"en": "1 regular plate", "id": "1 piring biasa"}, "grams": 350}
+      ],
+      "ambiguity_tags": ["oil", "sugar"]
+    },
+    {
+      "id": "ikan_bakar",
+      "name": {"en": "Grilled fish", "id": "Ikan bakar"},
+      "aliases": ["barbecued fish", "grilled fish", "ikan panggang", "ikan bakar kecap"],
+      "nutrients_per_100g": {"calories_kcal": 150, "protein_g": 25.0, "carbs_g": 2.0, "fat_g": 4.5},
+      "portions": [
+        {"id": "small_fillet", "label": {"en": "1 small fillet", "id": "1 filet kecil"}, "grams": 100},
+        {"id": "medium_fish", "label": {"en": "1 medium fish, edible part", "id": "1 ekor sedang, bagian yang dimakan"}, "grams": 180}
+      ],
+      "ambiguity_tags": ["oil", "sugar"]
+    },
+    {
+      "id": "sayur_campur",
+      "name": {"en": "Stir-fried mixed vegetables", "id": "Sayur campur tumis"},
+      "aliases": ["mixed vegetables", "vegetable stir-fry", "sayur campur", "tumis sayuran", "capcay"],
+      "nutrients_per_100g": {"calories_kcal": 80, "protein_g": 4.0, "carbs_g": 8.0, "fat_g": 3.5},
+      "portions": [
+        {"id": "small_bowl", "label": {"en": "1 small bowl", "id": "1 mangkuk kecil"}, "grams": 180},
+        {"id": "plate", "label": {"en": "1 plate", "id": "1 piring"}, "grams": 280}
+      ],
+      "ambiguity_tags": ["oil"]
+    },
+    {
+      "id": "bubur_ayam",
+      "name": {"en": "Chicken rice porridge", "id": "Bubur ayam"},
+      "aliases": ["chicken congee", "rice porridge with chicken", "bubur ayam lengkap", "bubur nasi ayam"],
+      "density_g_per_ml": 1.04,
+      "nutrients_per_100g": {"calories_kcal": 85, "protein_g": 4.5, "carbs_g": 12.0, "fat_g": 2.2},
+      "portions": [
+        {"id": "small_bowl", "label": {"en": "1 small bowl", "id": "1 mangkuk kecil"}, "grams": 300},
+        {"id": "regular_bowl", "label": {"en": "1 regular bowl", "id": "1 mangkuk biasa"}, "grams": 450}
+      ],
+      "ambiguity_tags": ["oil"]
+    },
+    {
+      "id": "nasi_uduk",
+      "name": {"en": "Coconut rice", "id": "Nasi uduk"},
+      "aliases": ["Indonesian coconut rice", "savory coconut rice", "nasi santan", "nasi uduk polos"],
+      "nutrients_per_100g": {"calories_kcal": 190, "protein_g": 3.5, "carbs_g": 31.0, "fat_g": 5.8},
+      "portions": [
+        {"id": "scoop", "label": {"en": "1 rice scoop", "id": "1 centong"}, "grams": 100},
+        {"id": "wrapped_serving", "label": {"en": "1 wrapped serving", "id": "1 bungkus"}, "grams": 200}
+      ],
+      "ambiguity_tags": ["coconut_milk"]
+    },
+    {
+      "id": "es_teh_manis",
+      "name": {"en": "Sweet iced tea", "id": "Es teh manis"},
+      "aliases": ["sweet tea", "iced sweet tea", "teh manis dingin", "esteh"],
+      "density_g_per_ml": 1.02,
+      "nutrients_per_100g": {"calories_kcal": 36, "protein_g": 0.0, "carbs_g": 9.0, "fat_g": 0.0},
+      "portions": [
+        {"id": "small_glass", "label": {"en": "1 small glass", "id": "1 gelas kecil"}, "grams": 204},
+        {"id": "large_glass", "label": {"en": "1 large glass", "id": "1 gelas besar"}, "grams": 357}
+      ],
+      "ambiguity_tags": ["sugar"]
+    },
+    {
+      "id": "banana",
+      "name": {"en": "Banana", "id": "Pisang"},
+      "aliases": ["raw banana", "banana fruit", "buah pisang", "pisang matang"],
+      "nutrients_per_100g": {"calories_kcal": 89, "protein_g": 1.1, "carbs_g": 22.8, "fat_g": 0.3},
+      "portions": [
+        {"id": "small_fruit", "label": {"en": "1 small banana", "id": "1 pisang kecil"}, "grams": 80},
+        {"id": "medium_fruit", "label": {"en": "1 medium banana", "id": "1 pisang sedang"}, "grams": 118}
+      ],
+      "ambiguity_tags": []
+    },
+    {
+      "id": "greek_yogurt",
+      "name": {"en": "Plain nonfat Greek yogurt", "id": "Yogurt Yunani tawar tanpa lemak"},
+      "aliases": ["plain Greek yogurt", "high-protein yogurt", "greek yogurt tawar", "yogurt tinggi protein"],
+      "density_g_per_ml": 1.04,
+      "nutrients_per_100g": {"calories_kcal": 59, "protein_g": 10.0, "carbs_g": 3.6, "fat_g": 0.4},
+      "portions": [
+        {"id": "small_cup", "label": {"en": "1 small cup", "id": "1 cup kecil"}, "grams": 150},
+        {"id": "cup", "label": {"en": "1 cup", "id": "1 cangkir"}, "grams": 245}
+      ],
+      "ambiguity_tags": []
+    },
+    {
+      "id": "oatmeal",
+      "name": {"en": "Oatmeal cooked with water", "id": "Oatmeal dimasak dengan air"},
+      "aliases": ["cooked oats", "porridge oats", "oat matang", "bubur oat"],
+      "density_g_per_ml": 1.03,
+      "nutrients_per_100g": {"calories_kcal": 71, "protein_g": 2.5, "carbs_g": 12.0, "fat_g": 1.5},
+      "portions": [
+        {"id": "half_cup", "label": {"en": "1/2 cup", "id": "1/2 cangkir"}, "grams": 117},
+        {"id": "cup", "label": {"en": "1 cup", "id": "1 cangkir"}, "grams": 234}
+      ],
+      "ambiguity_tags": []
+    },
+    {
+      "id": "whole_milk",
+      "name": {"en": "Whole milk", "id": "Susu sapi penuh lemak"},
+      "aliases": ["full-fat milk", "cow milk", "susu full cream", "susu murni"],
+      "density_g_per_ml": 1.03,
+      "nutrients_per_100g": {"calories_kcal": 61, "protein_g": 3.2, "carbs_g": 4.8, "fat_g": 3.3},
+      "portions": [
+        {"id": "small_glass", "label": {"en": "1 small glass", "id": "1 gelas kecil"}, "grams": 206},
+        {"id": "glass", "label": {"en": "1 glass", "id": "1 gelas"}, "grams": 258}
+      ],
+      "ambiguity_tags": []
+    },
+    {
+      "id": "whey_protein",
+      "name": {"en": "Whey protein powder", "id": "Bubuk protein whey"},
+      "aliases": ["protein powder", "whey", "whey concentrate", "bubuk whey", "protein bubuk"],
+      "nutrients_per_100g": {"calories_kcal": 400, "protein_g": 80.0, "carbs_g": 8.0, "fat_g": 6.0},
+      "portions": [
+        {"id": "half_scoop", "label": {"en": "1/2 scoop", "id": "1/2 takar"}, "grams": 15},
+        {"id": "scoop", "label": {"en": "1 scoop", "id": "1 takar"}, "grams": 30}
+      ],
+      "ambiguity_tags": []
+    }
+  ]
+}
