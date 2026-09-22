@@ -1,4 +1,5 @@
 name: Deploy website to GitHub Pages
+# GitHub Pages is configured to publish through Actions.
 
 on:
   push:
